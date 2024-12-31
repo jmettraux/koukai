@@ -7,6 +7,19 @@ class Koukai::Endpoints < Sinatra::Base
 
   enable :sessions
 
+  set :views, 'views/'
+
+  #
+  # slim helpers
+
+  helpers do
+
+    include Koukai::SlimHelpers
+  end
+
+  #
+  # the actual endpoints
+
   get '/' do
 
     'hello ' + session.inspect
@@ -14,7 +27,7 @@ class Koukai::Endpoints < Sinatra::Base
 
   get '/console' do
 
-    slim File.read('app/views/console.slim')
+    slim :console
   end
 end
 
