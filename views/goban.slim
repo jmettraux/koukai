@@ -4,7 +4,7 @@ html
 
   head
 
-    title Koukai Console
+    title 後悔
 
     meta(
       charset="utf-8")
@@ -21,7 +21,7 @@ html
     /! sheets
 
     link rel="stylesheet" href="sheets/reset.css" type="text/css"
-    link rel="stylesheet" href="sheets/console.css" type="text/css"
+    link rel="stylesheet" href="sheets/goban.css" type="text/css"
 
     / site.css is loaded via env.js
 
@@ -29,18 +29,13 @@ html
 
     script src=static_path('h-*.com.js')
     script src="scripts/koukai.js"
-    script src="scripts/console.js"
+    script src="scripts/goban.js"
 
   body#console
 
-    h1 console
-
-    #output
-
-    #input
-      input type='text'
+    #goban
 
     javascript:
 
-      H.onDocumentReady(function() { Console.init(); });
+      H.onDocumentReady(function() { Goban.init(); });
 

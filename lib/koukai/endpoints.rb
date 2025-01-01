@@ -64,6 +64,11 @@ class Koukai::Endpoints < Sinatra::Base
     slim :console
   end
 
+  get '/goban' do
+
+    slim :goban
+  end
+
   post '/actions' do
 
     json gnugo.post(body_data)

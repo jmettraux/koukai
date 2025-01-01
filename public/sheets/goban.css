@@ -1,0 +1,28 @@
+
+/*
+ * sheets/goban.css
+ */
+
+body {
+
+  margin: 1rem 1rem;
+
+  h1 {
+    font-size: 210%;
+    font-weight: bold;
+    margin: 1rem 0;
+  }
+}
+
+#goban {
+
+  width: 900px;
+  height: 900px;
+
+  margin: 2.1rem auto;
+
+  background-image: url('/images/kaya.jpg');
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+  background-size: cover; /* Ensures the image covers the entire div */
+}
+
