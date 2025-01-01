@@ -11,10 +11,11 @@ module Koukai
 
     def initialize
 
-      gnugo = ENV['KOUKAI_GNUGO'] || '/usr/local/bin/gnugo'
+      cmd =
+        ENV['KOUKAI_GNUGO'] || '/usr/local/bin/gnugo'
 
       @stdin, @stdout, @stderr, @wait_thread =
-        Open3.popen3("#{gnugo} --mode=gtp")
+        Open3.popen3("#{cmd} --mode=gtp")
     end
 
     def pid
@@ -24,9 +25,8 @@ module Koukai
 
     def raw_post(data)
 
+p [ :raw_post, pid, data ]
       data = IndifferentHash.new(data)
-p data
-p data['command']
 
       @stdin.puts(data['command'])
 
@@ -39,8 +39,9 @@ p data['command']
     def post(data)
 
       s = raw_post(data)
+      status = (s[0, 1] == '=') ? :success : :failure
 
-      { s: s }
+      { s: s, status: status }
     end
 
     def close

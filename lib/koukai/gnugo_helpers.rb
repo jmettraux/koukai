@@ -6,9 +6,14 @@ module Koukai
 
   module GnuGoHelpers
 
+    def gnugoes
+
+      $goes ||= {}
+    end
+
     def gnugo
 
-      session[:gnugo] ||= Koukai::GnuGo.new
+      gnugoes[session[:session_id].to_s] ||= Koukai::GnuGo.new
     end
   end
 end

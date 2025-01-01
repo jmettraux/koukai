@@ -6,20 +6,12 @@
 class Koukai::Endpoints < Sinatra::Base
 
   enable :sessions
+  #use Rack::Session::Pool, :expire_after => 24 * 60 * 60
 
   set :views, 'views/'
   set :public_folder, 'public/'
 
-  #use Rack::Session::Pool, :expire_after => 24 * 60 * 60
-
-  use Rack::Session::Cookie,
-    key: "koukai #{Koukai::VERSION}",
-    path: '/',
-    expire_after: 24 * 60 * 60, # seconds
-    secret: "sprezzatura_#{`uname -a`}_#{Time.now.to_f}",
-    same_site: :strict
-
-  use Rack::Protection, except: :json_csrf
+  #use Rack::Protection, except: :json_csrf
 
   #
   # helpers
@@ -30,7 +22,7 @@ class Koukai::Endpoints < Sinatra::Base
     include Koukai::GnuGoHelpers
   end
 
-  disable :dump_errors
+  #disable :dump_errors
   disable :show_exceptions
 
   #error StandardError do
