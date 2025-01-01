@@ -7,6 +7,7 @@ var Goban = (function() {
   "use strict";
 
   let self = this;
+  let elt = null;
 
   //
   // protected functions
@@ -15,6 +16,12 @@ var Goban = (function() {
   // public functions
 
   this.init = function() {
+
+    let gbe = new GoBoard();
+    H.satt(gbe, 'is', 'go-board');
+    H.satt(gbe, 'data-koukai-size', '19x19');
+      //
+    H.elt('#goban').appendChild(gbe);
   };
 
   //
