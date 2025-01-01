@@ -4,7 +4,7 @@
 
 module Koukai
 
-  module GnugoHelpers
+  module GnuGoHelpers
 
     def gnugo
 

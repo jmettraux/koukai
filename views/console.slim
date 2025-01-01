@@ -1,7 +1,35 @@
 
-/ console.slim
+doctype html
+html
 
-| hello console
+  head
 
-h2 = custom_greeting('toto')
+    title Koukai Console
+
+    meta(
+      charset="utf-8")
+
+    /meta(
+      name="viewport"
+      content="initial-scale=1.0,width=device-width,maximum-scale=1.0,user-scalable=no")
+
+    css:
+      .hidden { display: none; }
+
+    /== slim :_favicons
+
+    /! sheets
+
+    link rel="stylesheet" href="sheets/reset.css" type="text/css"
+    link rel="stylesheet" href="sheets/koukai.css" type="text/css"
+
+    / site.css is loaded via env.js
+
+    /! scripts
+
+    script src=static_path('h-*.com.js')
+
+  body#console
+
+    h1 console
 

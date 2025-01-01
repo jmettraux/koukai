@@ -6,8 +6,11 @@ module Koukai
 
   module SlimHelpers
 
-    def custom_greeting(name)
-      "Hello, #{name}!"
+    def static_path(pattern)
+
+      File.join(
+        Dir[File.join('public', '**', pattern)].first
+          .split(File::SEPARATOR)[1..-1])
     end
   end
 end

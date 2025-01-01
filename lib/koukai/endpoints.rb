@@ -8,6 +8,7 @@ class Koukai::Endpoints < Sinatra::Base
   enable :sessions
 
   set :views, 'views/'
+  set :public_folder, 'public/'
 
   #
   # slim helpers
