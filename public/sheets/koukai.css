@@ -24,5 +24,12 @@ body#console {
     border: none;
     outline: none;
   }
+
+  pre.command {
+    margin-top: 0.7rem;
+    font-style: italic;
+  }
+  pre.output {
+  }
 }
 

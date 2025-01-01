@@ -25,9 +25,6 @@ module Koukai
 
     def raw_post(data)
 
-p [ :raw_post, pid, data ]
-      data = IndifferentHash.new(data)
-
       @stdin.puts(data['command'])
 
       s = ''; loop do
@@ -38,10 +35,10 @@ p [ :raw_post, pid, data ]
 
     def post(data)
 
-      s = raw_post(data)
-      status = (s[0, 1] == '=') ? :success : :failure
+      o = raw_post(data)
+      s = (o[0, 1] == '=') ? :success : :failure
 
-      { s: s, status: status }
+      { o: o, s: s, c: data['command'] }
     end
 
     def close

@@ -13,16 +13,22 @@ var Console = (function() {
   //
   // protected functions
 
-  var onGnuGo = function(res) {
+  let bodyClick = function(ev) {
 
-    H.c(outputElt, 'pre', res.data.s);
+    if (ev.target.tagName === 'body') inputElt.focus();
+  };
 
-    inputElt.val = '';
+  let onGnuGo = function(res) {
+
+    H.c(outputElt, 'pre.command', res.data.c);
+    H.c(outputElt, 'pre.output', res.data.o);
+
+    inputElt.value = '';
     inputElt.scrollIntoView();
     inputElt.focus();
   };
 
-  var expandCommand = function(s) {
+  let expandCommand = function(s) {
 
     if (s === 'cl') return 'CLEAR';
 
@@ -32,7 +38,7 @@ var Console = (function() {
     return s;
   };
 
-  var onInputKey = function(ev) {
+  let onInputKey = function(ev) {
 
     if (ev.key !== 'Enter') return;
 
@@ -49,6 +55,8 @@ var Console = (function() {
   // public functions
 
   this.init = function() {
+
+    H.onc('body', bodyClick);
 
     inputElt = H.elt('#input input');
     outputElt = H.elt('#output');
