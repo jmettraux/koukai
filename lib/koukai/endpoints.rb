@@ -10,13 +10,53 @@ class Koukai::Endpoints < Sinatra::Base
   set :views, 'views/'
   set :public_folder, 'public/'
 
+  #use Rack::Session::Pool, :expire_after => 24 * 60 * 60
+
+  use Rack::Session::Cookie,
+    key: "koukai #{Koukai::VERSION}",
+    path: '/',
+    expire_after: 24 * 60 * 60, # seconds
+    secret: "sprezzatura_#{`uname -a`}_#{Time.now.to_f}",
+    same_site: :strict
+
+  use Rack::Protection, except: :json_csrf
+
   #
-  # slim helpers
+  # helpers
 
   helpers do
 
     include Koukai::SlimHelpers
     include Koukai::GnuGoHelpers
+  end
+
+  disable :dump_errors
+  disable :show_exceptions
+
+  #error StandardError do
+  #  err = env['sinatra.error']
+  #  puts 'v' * 80
+  #  puts err
+  #  puts "---rrr---"
+  #  puts err.backtrace
+  #  puts '^' * 80
+  #end
+
+  #def body_string
+  #  #request.body.rewind
+  #  request.body.read
+  #end
+
+  def body_data
+
+    JSON.parse(request.body.read)
+  end
+
+  def json(o)
+
+    content_type 'application/json; charset=UTF-8'
+
+    JSON.dump(o)
   end
 
   #
@@ -34,7 +74,7 @@ class Koukai::Endpoints < Sinatra::Base
 
   post '/actions' do
 
-    # TODO
+    json gnugo.post(body_data)
   end
 end
 

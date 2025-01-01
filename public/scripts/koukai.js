@@ -21,3 +21,8 @@ var Koukai = (function() {
 
 }).apply({}); // end Koukai
 
+
+var clog = console.log;
+var cerr = console.error;
+var ctrace = console.trace;
+

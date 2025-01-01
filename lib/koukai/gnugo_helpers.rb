@@ -8,7 +8,7 @@ module Koukai
 
     def gnugo
 
-      @gnugo ||= Koukai::GnuGo.new
+      session[:gnugo] ||= Koukai::GnuGo.new
     end
   end
 end

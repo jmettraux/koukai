@@ -1,6 +1,28 @@
 
+body {
+
+  margin: 1rem 1rem;
+
+  h1 {
+    font-size: 210%;
+    font-weight: bold;
+    margin: 1rem 0;
+  }
+}
+
 body#console {
 
+  font-size: 14pt;
   font-family: monospace;
+
+  #input input {
+    font-size: 14pt;
+    width: 100%;
+    border: none;
+  }
+  #input input:focus {
+    border: none;
+    outline: none;
+  }
 }
 

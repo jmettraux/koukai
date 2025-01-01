@@ -25,6 +25,8 @@ module Koukai
     def raw_post(data)
 
       data = IndifferentHash.new(data)
+p data
+p data['command']
 
       @stdin.puts(data['command'])
 
@@ -32,6 +34,13 @@ module Koukai
         s += @stdout.gets
         break s if s.end_with?("\n\n")
       end
+    end
+
+    def post(data)
+
+      s = raw_post(data)
+
+      { s: s }
     end
 
     def close

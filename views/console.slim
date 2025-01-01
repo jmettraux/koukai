@@ -29,8 +29,18 @@ html
 
     script src=static_path('h-*.com.js')
     script src="scripts/koukai.js"
+    script src="scripts/console.js"
 
   body#console
 
     h1 console
+
+    #output
+
+    #input
+      input type='text'
+
+    javascript:
+
+      H.onDocumentReady(function() { Console.init(); });
 
