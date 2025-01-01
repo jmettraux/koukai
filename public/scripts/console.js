@@ -34,6 +34,7 @@ var Console = (function() {
 
     if (s === '9x9') return 'boardsize 9';
     if (s === 'show') return 'showboard';
+    if (s === 'score') return 'estimate_score';
 
     return s;
   };
