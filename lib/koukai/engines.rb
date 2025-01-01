@@ -7,15 +7,15 @@ require 'open3'
 
 module Koukai
 
-  class GnuGo
+  class Engine
 
-    def initialize
+    attr_reader :name, :id
 
-      cmd =
-        ENV['KOUKAI_GNUGO'] || '/usr/local/bin/gnugo'
+    def initialize(name, id)
 
-      @stdin, @stdout, @stderr, @wait_thread =
-        Open3.popen3("#{cmd} --mode=gtp")
+      @name, @id = name, id
+
+      @stdin, @stdout, @stderr, @wait_thread = Open3.popen3(command)
     end
 
     def pid
@@ -48,6 +48,16 @@ module Koukai
       @stderr.close
 
       @stdin = nil
+    end
+  end
+
+  class GnuGoEngine < Engine
+
+    def command
+
+      cmd = ENV['KOUKAI_GNUGO'] || '/usr/local/bin/gnugo'
+
+      "#{cmd} --mode=gtp"
     end
   end
 end

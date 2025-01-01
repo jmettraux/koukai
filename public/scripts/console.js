@@ -18,7 +18,7 @@ var Console = (function() {
     if (ev.target.tagName === 'body') inputElt.focus();
   };
 
-  let onGnuGo = function(res) {
+  let onGtp = function(res) {
 
     H.c(outputElt, 'pre.command', res.data.c);
     H.c(outputElt, 'pre.output', res.data.o);
@@ -47,9 +47,9 @@ var Console = (function() {
 
     if (c === 'CLEAR') { H.clean(outputElt); return; }
 
-    let d = { 'command': c };
+    let d = { command: c, engine: 'GnuGO', id: 1 };
 
-    H.request('POST', '/actions', d, onGnuGo);
+    H.request('POST', `/gtp/${d.engine}/${d.id}`, d, onGtp);
   };
 
   //

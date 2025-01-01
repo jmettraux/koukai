@@ -2,7 +2,7 @@
 #
 # test/gnugo_test.rb
 
-group 'koukai :: gnugo' do
+group 'Koukai :: GnuGoEngine' do
 
   after do
 
@@ -11,15 +11,15 @@ group 'koukai :: gnugo' do
 
   test '.new' do
 
-    @g = Koukai::GnuGo.new
+    @g = Koukai::GnuGoEngine.new('gnugo', 0)
 
     assert @g.pid > 0
 
-    r = @g.raw_post(command: 'boardsize 9')
+    r = @g.raw_post('command' => 'boardsize 9')
 
     assert_equal r.strip, '='
 
-    r = @g.raw_post(command: 'showboard')
+    r = @g.raw_post('command' => 'showboard')
 
     assert_match r, /WHITE \(O\) has captured 0 stones/
   end

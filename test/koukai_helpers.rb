@@ -5,5 +5,5 @@
 $: << 'lib'
 
 require '_extensions'
-require 'koukai/gnugo'
+require 'koukai/engines'
 

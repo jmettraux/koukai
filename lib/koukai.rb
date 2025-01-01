@@ -12,9 +12,8 @@ require 'json'
 
 require '_extensions'
 
-require 'koukai/gnugo'
-
-require 'koukai/gnugo_helpers'
+require 'koukai/engines'
+require 'koukai/engine_helpers'
 require 'koukai/slim_helpers'
 
 require 'koukai/endpoints'

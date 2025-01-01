@@ -19,7 +19,7 @@ class Koukai::Endpoints < Sinatra::Base
   helpers do
 
     include Koukai::SlimHelpers
-    include Koukai::GnuGoHelpers
+    include Koukai::EngineHelpers
   end
 
   #disable :dump_errors
@@ -32,6 +32,16 @@ class Koukai::Endpoints < Sinatra::Base
   #  puts "---rrr---"
   #  puts err.backtrace
   #  puts '^' * 80
+  #end
+
+  def param(key)
+
+    params[key]
+  end
+
+  #def param_i(key)
+  #  v = params[key]
+  #  v ? v.to_i : nil
   #end
 
   #def body_string
@@ -69,9 +79,9 @@ class Koukai::Endpoints < Sinatra::Base
     slim :goban
   end
 
-  post '/actions' do
+  post '/gtp/:engine/:id' do
 
-    json gnugo.post(body_data)
+    json engine(param(:engine), param(:id)).post(body_data)
   end
 end
 
