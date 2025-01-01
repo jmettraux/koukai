@@ -11,7 +11,7 @@ pkg/
 .ruby-version
 #.rspec
 
-.proba-output.rb
+.probatio-output.rb
 .test-point
 
 .todo.md

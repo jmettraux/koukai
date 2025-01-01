@@ -15,6 +15,7 @@ class Koukai::Endpoints < Sinatra::Base
   helpers do
 
     include Koukai::SlimHelpers
+    include Koukai::GnuGoHelpers
   end
 
   #
@@ -28,6 +29,11 @@ class Koukai::Endpoints < Sinatra::Base
   get '/console' do
 
     slim :console
+  end
+
+  post '/actions' do
+
+    # TODO
   end
 end
 
