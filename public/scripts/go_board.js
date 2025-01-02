@@ -30,7 +30,7 @@ class DivComponent extends HTMLDivElement {
   attributeChangedCallback(name, v0, v1) {
 
     let ns = name.split('-').slice(1);
-    if (ns[0] === 'sg') ns = ns.slice(1);
+    if (ns[0] === 'koukai') ns = ns.slice(1);
     let n = ns.map(e => H.cap(e)).join('');
       //
     let fn = `_on${n}AttChange`;
@@ -85,7 +85,7 @@ clog('w', w, 'h', h);
         { d: `M 0 0 L ${w} ${h}`, stroke: 'black', 'stroke-width': 0.9 } ]);
   }
 
-  _onKoukaiSizeAttChange(name, v0, v1) {
+  _onSizeAttChange(name, v0, v1) {
 
 clog('att', name, '->', v1);
   }
@@ -93,11 +93,12 @@ clog('att', name, '->', v1);
   //
   // public methods
 
-  static get observedAttributes() {
-    return [
-      'data-koukai-engine', 'data-koukai-engine-id',
-      'data-koukai-size', 'data-koukai-sound'
-        ]; }
+  static get observedAttributes() { return [
+    'data-koukai-engine', 'data-koukai-engine-id', // string and int
+    'data-koukai-size', // -> 9x9, 13x13, or 19x19
+    'data-koukai-sound', // -> on/off
+    'data-koukai-labels', // -> on/off
+      ]; }
 
   //constructor() {
   //  super();
@@ -112,7 +113,8 @@ clog('att', name, '->', v1);
   }
 
   get size() { return this._atti('-koukai-size', 19); }
-  get _svg() { return this._e('svg'); }
+
+  //get _svg() { return this._e('svg'); }
 }
 
 customElements.define('go-board', GoBoard, { extends: 'div' });
