@@ -37,7 +37,8 @@ class DivComponent extends HTMLDivElement {
     let f = this[fn];
 
     if (typeof f === 'function') return f.bind(this)(name, v0, v1);
-    throw new Error(`No \`${fn}\` function in ${this.constructor.name} class`);
+
+    //throw new Error(`No \`${fn}\` func in ${this.constructor.name} class`);
   }
 }
 
@@ -89,37 +90,29 @@ class GoBoard extends DivComponent {
     let lh = this._lineHeight;
     let lw = this._lineWidth;
 
-    for (let i = 0; i < s; i++) {
+    for (let i = 0; i < s; i++) Svg.build( // horizontal lines
+      svge,
+      [ 'path',
+        { d:
+            `M ${xp} ${yp + (i * lh)} L ${xp + s1 * lw} ${yp + (i * lh)}`,
+          stroke: 'black', 'stroke-width': this._lineThickness } ]);
 
-      Svg.build(
-        svge,
-        [ 'path',
-          { d:
-              `M ${xp} ${yp + (i * lh)} L ${xp + s1 * lw} ${yp + (i * lh)}`,
-            stroke: 'black', 'stroke-width': this._lineThickness } ]);
-    }
-
-    for (let i = 0; i < s; i++) {
-
-      Svg.build(
-        svge,
-        [ 'path',
-          { d:
-              `M ${xp + (i * lw)} ${yp} L ${xp + (i * lw)} ${yp + s1 * lh}`,
-            stroke: 'black', 'stroke-width': this._lineThickness } ]);
-    }
+    for (let i = 0; i < s; i++) Svg.build( // vertical lines
+      svge,
+      [ 'path',
+        { d:
+            `M ${xp + (i * lw)} ${yp} L ${xp + (i * lw)} ${yp + s1 * lh}`,
+          stroke: 'black', 'stroke-width': this._lineThickness } ]);
 
     let stars =
       s === 19 ? [
         [ 4,  4 ], [ 10,  4 ], [ 16,  4 ],
         [ 4, 10 ], [ 10, 10 ], [ 16, 10 ],
-        [ 4, 16 ], [ 10, 16 ], [ 16, 16 ],
-          ] :
+        [ 4, 16 ], [ 10, 16 ], [ 16, 16 ], ] :
       s === 13 ? [
         [  4,  4 ], [ 10,  4 ],
         [  7,  7 ],
-        [  4, 10 ], [ 10, 10 ],
-          ] :
+        [  4, 10 ], [ 10, 10 ], ] :
       [
         [ 3, 3 ], [ 7, 3 ],
         [ 5, 5 ],
@@ -138,10 +131,8 @@ class GoBoard extends DivComponent {
     }
   }
 
-  _onSizeAttChange(name, v0, v1) {
-
-clog('att', name, '->', v1);
-  }
+  //_onSizeAttChange(name, v0, v1) {
+  //}
 
   //
   // public methods
