@@ -52,15 +52,20 @@ class DivComponent extends HTMLDivElement {
 // Line thickness              1           1/32     0.3  bu 分
 // Star point marker diameter  4           5/32     1.2  bu 分
 // Stone diameter             22.5        29/32     7.5  bu 分
-//
-// thus
-//
-//   grid width   418.0mm
-//   grid height  450.3mm
-//
-//   margin left/top 3.0999mm 2.0999mm
 
 class GoBoard extends DivComponent {
+
+  _bw = 424.2;
+  _bh = 454.5;
+  _lw = 22.0;
+  _lh = 23.7;
+  _xmargin = (this._bw - 18 * this._lw) / 2;
+  _ymargin = (this._bh - 18 * this._lh) / 2;
+  _bhtow = this._bh / this._bw;
+  _lhtow = this._lh / this._lw;
+  _stard = 4.0;
+  //_lthik = 1.0;
+  _lthik = 0.7;
 
   //
   // private methods
@@ -68,21 +73,38 @@ class GoBoard extends DivComponent {
   //
   // "protected" methods
 
+  get _derivedHeight() { return this.clientWidth * this._bhtow; }
+
   _drawGrid() {
 
     H.clean(this);
 
-    let svge = Svg.create(this, 'svg', {}, null, null);
-clog('svg', svge);
+    let svge = Svg.create(
+      this, 'svg', { viewBox: `0 0 ${this._bw} ${this._bh}` });
 
-    let w = svge.clientWidth;
-    let h = svge.clientHeight;
-clog('w', w, 'h', h);
+    let s = this.size;
+    let s1 = s - 1;
+    let lh = this._lh;
+    let lw = this._lw;
 
-    Svg.b(
-      svge,
-      [ 'path',
-        { d: `M 0 0 L ${w} ${h}`, stroke: 'black', 'stroke-width': 0.9 } ]);
+    for (let i = 0; i < s; i++) {
+      Svg.build(
+        svge,
+        [ 'path',
+          { d:
+              `M ${this._xmargin} ${this._ymargin + (i * lh)} ` +
+              `L ${this._xmargin + s1 * lw} ${this._ymargin + (i * lh)}`,
+            stroke: 'black', 'stroke-width': this._lthik } ]);
+    }
+    for (let i = 0; i < s; i++) {
+      Svg.build(
+        svge,
+        [ 'path',
+          { d:
+              `M ${this._xmargin + (i * lw)} ${this._ymargin} ` +
+              `L ${this._xmargin + (i * lw)} ${this._ymargin + s1 * lh}`,
+            stroke: 'black', 'stroke-width': this._lthik } ]);
+    }
   }
 
   _onSizeAttChange(name, v0, v1) {
@@ -108,6 +130,9 @@ clog('att', name, '->', v1);
 
     //super.connectedCallback();
       // actually, no... It complains...
+
+    this.style.height = `${this._derivedHeight}px`;
+    this.style.minHeight = this.style.height;
 
     this._drawGrid();
   }
