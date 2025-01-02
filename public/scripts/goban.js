@@ -19,7 +19,9 @@ var Goban = (function() {
 
     let gbe = new GoBoard();
     H.satt(gbe, 'is', 'go-board');
-    H.satt(gbe, 'data-koukai-size', '19x19');
+    //H.satt(gbe, 'data-koukai-size', '9x9');
+    H.satt(gbe, 'data-koukai-size', '13x13');
+    //H.satt(gbe, 'data-koukai-size', '19x19');
       //
     H.elt('#goban').appendChild(gbe);
   };

@@ -55,17 +55,13 @@ class DivComponent extends HTMLDivElement {
 
 class GoBoard extends DivComponent {
 
-  _bw = 424.2;
-  _bh = 454.5;
-  _lw = 22.0;
-  _lh = 23.7;
-  _xmargin = (this._bw - 18 * this._lw) / 2;
-  _ymargin = (this._bh - 18 * this._lh) / 2;
-  _bhtow = this._bh / this._bw;
-  _lhtow = this._lh / this._lw;
-  _stard = 4.0;
-  //_lthik = 1.0;
-  _lthik = 0.7;
+  _boardHeightToWidth = 454.5 / 424.2;
+  _lineHeight = 23.7;
+  _lineWidth = 22.0;
+  _xpad = 14;
+  _ypad = 14;
+  _lineThickness = 0.7;
+  _starRadius = 4.0 / 2;
 
   //
   // private methods
@@ -73,22 +69,25 @@ class GoBoard extends DivComponent {
   //
   // "protected" methods
 
-  get _derivedHeight() { return this.clientWidth * this._bhtow; }
+  get _derivedHeight() { return this.clientWidth * this._boardHeightToWidth; }
 
   _drawGrid() {
 
     H.clean(this);
 
-    let svge = Svg.create(
-      this, 'svg', { viewBox: `0 0 ${this._bw} ${this._bh}` });
-
-    let xm = this._xmargin;
-    let ym = this._ymargin;
-
     let s = this.size;
     let s1 = s - 1;
-    let lh = this._lh;
-    let lw = this._lw;
+
+    let xp = this._xpad;
+    let yp = this._ypad;
+
+    let bh = yp * 2 + s1 * this._lineHeight;
+    let bw = xp * 2 + s1 * this._lineWidth;
+
+    let svge = Svg.create(this, 'svg', { viewBox: `0 0 ${bw} ${bh}` });
+
+    let lh = this._lineHeight;
+    let lw = this._lineWidth;
 
     for (let i = 0; i < s; i++) {
 
@@ -96,8 +95,8 @@ class GoBoard extends DivComponent {
         svge,
         [ 'path',
           { d:
-              `M ${xm} ${ym + (i * lh)} L ${xm + s1 * lw} ${ym + (i * lh)}`,
-            stroke: 'black', 'stroke-width': this._lthik } ]);
+              `M ${xp} ${yp + (i * lh)} L ${xp + s1 * lw} ${yp + (i * lh)}`,
+            stroke: 'black', 'stroke-width': this._lineThickness } ]);
     }
 
     for (let i = 0; i < s; i++) {
@@ -106,8 +105,8 @@ class GoBoard extends DivComponent {
         svge,
         [ 'path',
           { d:
-              `M ${xm + (i * lw)} ${ym} L ${xm + (i * lw)} ${ym + s1 * lh}`,
-            stroke: 'black', 'stroke-width': this._lthik } ]);
+              `M ${xp + (i * lw)} ${yp} L ${xp + (i * lw)} ${yp + s1 * lh}`,
+            stroke: 'black', 'stroke-width': this._lineThickness } ]);
     }
 
     let stars =
@@ -117,8 +116,14 @@ class GoBoard extends DivComponent {
         [ 4, 16 ], [ 10, 16 ], [ 16, 16 ],
           ] :
       s === 13 ? [
+        [  4,  4 ], [ 10,  4 ],
+        [  7,  7 ],
+        [  4, 10 ], [ 10, 10 ],
           ] :
       [
+        [ 3, 3 ], [ 7, 3 ],
+        [ 5, 5 ],
+        [ 3, 7 ], [ 7, 7 ],
           ];
 
     for (let xy of stars) {
@@ -128,7 +133,7 @@ class GoBoard extends DivComponent {
       Svg.build(
         svge,
         [ 'circle',
-          { cx: xm + x * lw, cy: ym + y * lh, r: this._stard / 2,
+          { cx: xp + x * lw, cy: yp + y * lh, r: this._starRadius,
             fill: 'black', 'stroke-width': 0.3 } ]);
     }
   }
