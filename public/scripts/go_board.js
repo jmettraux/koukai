@@ -82,28 +82,54 @@ class GoBoard extends DivComponent {
     let svge = Svg.create(
       this, 'svg', { viewBox: `0 0 ${this._bw} ${this._bh}` });
 
+    let xm = this._xmargin;
+    let ym = this._ymargin;
+
     let s = this.size;
     let s1 = s - 1;
     let lh = this._lh;
     let lw = this._lw;
 
     for (let i = 0; i < s; i++) {
+
       Svg.build(
         svge,
         [ 'path',
           { d:
-              `M ${this._xmargin} ${this._ymargin + (i * lh)} ` +
-              `L ${this._xmargin + s1 * lw} ${this._ymargin + (i * lh)}`,
+              `M ${xm} ${ym + (i * lh)} L ${xm + s1 * lw} ${ym + (i * lh)}`,
             stroke: 'black', 'stroke-width': this._lthik } ]);
     }
+
     for (let i = 0; i < s; i++) {
+
       Svg.build(
         svge,
         [ 'path',
           { d:
-              `M ${this._xmargin + (i * lw)} ${this._ymargin} ` +
-              `L ${this._xmargin + (i * lw)} ${this._ymargin + s1 * lh}`,
+              `M ${xm + (i * lw)} ${ym} L ${xm + (i * lw)} ${ym + s1 * lh}`,
             stroke: 'black', 'stroke-width': this._lthik } ]);
+    }
+
+    let stars =
+      s === 19 ? [
+        [ 4,  4 ], [ 10,  4 ], [ 16,  4 ],
+        [ 4, 10 ], [ 10, 10 ], [ 16, 10 ],
+        [ 4, 16 ], [ 10, 16 ], [ 16, 16 ],
+          ] :
+      s === 13 ? [
+          ] :
+      [
+          ];
+
+    for (let xy of stars) {
+
+      let x = xy[0] - 1; let y = xy[1] - 1;
+
+      Svg.build(
+        svge,
+        [ 'circle',
+          { cx: xm + x * lw, cy: ym + y * lh, r: this._stard / 2,
+            fill: 'black', 'stroke-width': 0.3 } ]);
     }
   }
 
