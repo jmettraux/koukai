@@ -3,7 +3,7 @@
 
 "regret"
 
-A GnuGO wrapper.
+A web goban, just for me.
 
 
 ## LICENSE
