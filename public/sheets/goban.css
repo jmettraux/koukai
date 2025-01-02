@@ -14,15 +14,18 @@ body {
   }
 }
 
-#goban {
-
-  width: 900px;
-  height: 900px;
+[is="go-board"] {
 
   margin: 2.1rem auto;
 
-  background-image: url('/images/kaya.jpg');
-  background-repeat: no-repeat; /* Prevents the image from repeating */
-  background-size: cover; /* Ensures the image covers the entire div */
+  svg {
+
+    width: 900px;
+    height: 900px;
+
+    background-image: url('/images/kaya.jpg');
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    background-size: cover; /* Ensures the image covers the entire div */
+  }
 }
 
