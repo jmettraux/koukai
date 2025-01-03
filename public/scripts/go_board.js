@@ -91,15 +91,13 @@ class GoBoard extends DivComponent {
     for (let i = 0; i < s; i++) Svg.build( // horizontal lines
       svge,
       [ 'path',
-        { d:
-            `M ${xp} ${yp + (i * lh)} L ${xp + s1 * lw} ${yp + (i * lh)}`,
+        { d: `M ${xp} ${yp + (i * lh)} L ${xp + s1 * lw} ${yp + (i * lh)}`,
           stroke: 'black', 'stroke-width': this._lineThickness } ]);
 
     for (let i = 0; i < s; i++) Svg.build( // vertical lines
       svge,
       [ 'path',
-        { d:
-            `M ${xp + (i * lw)} ${yp} L ${xp + (i * lw)} ${yp + s1 * lh}`,
+        { d: `M ${xp + (i * lw)} ${yp} L ${xp + (i * lw)} ${yp + s1 * lh}`,
           stroke: 'black', 'stroke-width': this._lineThickness } ]);
 
     let stars =
@@ -114,8 +112,7 @@ class GoBoard extends DivComponent {
       [
         [ 3, 3 ], [ 7, 3 ],
         [ 5, 5 ],
-        [ 3, 7 ], [ 7, 7 ],
-          ];
+        [ 3, 7 ], [ 7, 7 ], ];
 
     for (let xy of stars) {
 
