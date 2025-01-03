@@ -25,8 +25,6 @@ var Goban = (function() {
     H.satt(gbe, 'data-koukai-size', '19x19');
       //
     H.elt('#goban').appendChild(gbe);
-
-    H.onk('body', gbe.onKey.bind(gbe));
   };
 
   //

@@ -134,6 +134,8 @@ class GoBoard extends DivComponent {
     this._drawGrid();
   }
 
+  _onKey(ev) { clog('GoBoard', 'onKey()', ev); };
+
   //
   // public methods
 
@@ -163,13 +165,13 @@ class GoBoard extends DivComponent {
         e.target.style.height = `${h}px`;
         e.target.style.minHeight = `${h}px`; } });
     ro.observe(this);
+
+    H.onk('body', this._onKey.bind(this));
   }
 
   get size() { return this._atti('-koukai-size', 19); }
 
   //get _svg() { return this._e('svg'); }
-
-  onKey(ev) { clog('GoBoard', 'onKey()', ev); };
 }
 
 class GnuGoBoard extends GoBoard {
@@ -204,12 +206,12 @@ class GnuGoBoard extends GoBoard {
     // TODO
   }
 
+  _onKey(ev) { this[`_${this.#mode}OnKey`](ev); }
+
   //
   // public methods
 
   get mode() { return this.#mode; }
-
-  onKey(ev) { this[`_${this.#mode}OnKey`](ev); }
 }
 
 customElements.define('go-board', GoBoard, { extends: 'div' });
