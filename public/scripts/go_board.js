@@ -177,6 +177,8 @@ class GoBoard extends DivComponent {
 class GnuGoBoard extends GoBoard {
 
   #mode = 'idle' // or 'playing'
+  #bid = `goban${Date.now()}`
+  #player = 'black' // or 'white'
 
   //
   // private methods
@@ -184,20 +186,37 @@ class GnuGoBoard extends GoBoard {
   //
   // "protected" methods
 
+  _onGtp(res) {
+
+clog('_onGtp()', res);
+  }
+
+  _send(cmd) {
+
+    H.request(
+      'POST', `/gtp/${d.engine}/${d.id}`,
+      { command: cmd, engine: 'GnuGO', id: this.#bid },
+      this._onGtp.bind(this));
+  }
+
   _idleOnKey(ev) {
 
     if (ev.key === 'b') {
     }
     else if (ev.key === 'w') {
+      this.#mode = 'playing';
     }
     else if (ev.key === '9') {
       H.satt(this, '-koukai-size', '9x9');
+      this._send('boardsize 9');
     }
     else if (ev.key === '3') {
       H.satt(this, '-koukai-size', '13x13');
+      this._send('boardsize 13');
     }
     else if (ev.key === '1') {
       H.satt(this, '-koukai-size', '19x19');
+      this._send('boardsize 19');
     }
   }
 

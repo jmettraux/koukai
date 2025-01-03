@@ -47,7 +47,7 @@ var Console = (function() {
 
     if (c === 'CLEAR') { H.clean(outputElt); return; }
 
-    let d = { command: c, engine: 'GnuGO', id: 1 };
+    let d = { command: c, engine: 'GnuGO', id: 'console0' };
 
     H.request('POST', `/gtp/${d.engine}/${d.id}`, d, onGtp);
   };
