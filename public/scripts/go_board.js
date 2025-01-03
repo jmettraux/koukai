@@ -148,6 +148,8 @@ class GoBoard extends DivComponent {
     //super.connectedCallback();
       // actually, no... It complains...
 
+    H.addc(this, '.go-board');
+
     this._drawGrid();
 
     let ro = new ResizeObserver(function(es) {
@@ -163,5 +165,18 @@ class GoBoard extends DivComponent {
   //get _svg() { return this._e('svg'); }
 }
 
+class GnuGoBoard extends GoBoard {
+
+  //
+  // private methods
+
+  //
+  // "protected" methods
+
+  //
+  // public methods
+}
+
 customElements.define('go-board', GoBoard, { extends: 'div' });
+customElements.define('gnu-go-board', GnuGoBoard, { extends: 'div' });
 

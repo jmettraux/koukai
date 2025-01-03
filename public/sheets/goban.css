@@ -15,7 +15,7 @@ body {
   }
 }
 
-[is="go-board"] {
+.go-board[is] {
 
   margin: 2.1rem auto;
   width: 90%;
