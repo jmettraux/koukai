@@ -70,8 +70,6 @@ class GoBoard extends DivComponent {
   //
   // "protected" methods
 
-  get _derivedHeight() { return this.clientWidth * this._boardHeightToWidth; }
-
   _drawGrid() {
 
     H.clean(this);
@@ -153,10 +151,14 @@ class GoBoard extends DivComponent {
     //super.connectedCallback();
       // actually, no... It complains...
 
-    this.style.height = `${this._derivedHeight}px`;
-    this.style.minHeight = this.style.height;
-
     this._drawGrid();
+
+    let ro = new ResizeObserver(function(es) {
+      for (let e of es) {
+        let h = e.contentRect.width * e.target._boardHeightToWidth;
+        e.target.style.height = `${h}px`;
+        e.target.style.minHeight = `${h}px`; } });
+    ro.observe(this);
   }
 
   get size() { return this._atti('-koukai-size', 19); }
