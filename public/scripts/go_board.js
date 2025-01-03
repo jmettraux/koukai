@@ -45,12 +45,15 @@ class DivComponent extends HTMLDivElement {
 // https://senseis.xmp.net/?EquipmentDimensions
 //
 //                            mm
+//
 // Board width               424.2     16 23/32     1.4  shaku 尺
 // Board length              454.5     17 29/32     1.5  shaku 尺
 // Board thickness           151.5      5 31/32     0.5  shaku 尺
+//
 // Line spacing width-wise    22           7/8      7.26 bu 分
 // Line spacing length-wise   23.7        15/16     7.82 bu 分
 // Line thickness              1           1/32     0.3  bu 分
+//
 // Star point marker diameter  4           5/32     1.2  bu 分
 // Stone diameter             22.5        29/32     7.5  bu 分
 
@@ -126,8 +129,10 @@ class GoBoard extends DivComponent {
     }
   }
 
-  //_onSizeAttChange(name, v0, v1) {
-  //}
+  _onSizeAttChange(name, v0, v1) {
+
+    this._drawGrid();
+  }
 
   //
   // public methods
@@ -163,9 +168,13 @@ class GoBoard extends DivComponent {
   get size() { return this._atti('-koukai-size', 19); }
 
   //get _svg() { return this._e('svg'); }
+
+  onKey(ev) { clog('GoBoard', 'onKey()', ev); };
 }
 
 class GnuGoBoard extends GoBoard {
+
+  #mode = 'idle' // or 'playing'
 
   //
   // private methods
@@ -173,8 +182,34 @@ class GnuGoBoard extends GoBoard {
   //
   // "protected" methods
 
+  _idleOnKey(ev) {
+
+    if (ev.key === 'b') {
+    }
+    else if (ev.key === 'w') {
+    }
+    else if (ev.key === '9') {
+      H.satt(this, '-koukai-size', '9x9');
+    }
+    else if (ev.key === '3') {
+      H.satt(this, '-koukai-size', '13x13');
+    }
+    else if (ev.key === '1') {
+      H.satt(this, '-koukai-size', '19x19');
+    }
+  }
+
+  _playingOnKey(ev) {
+
+    // TODO
+  }
+
   //
   // public methods
+
+  get mode() { return this.#mode; }
+
+  onKey(ev) { this[`_${this.#mode}OnKey`](ev); }
 }
 
 customElements.define('go-board', GoBoard, { extends: 'div' });
