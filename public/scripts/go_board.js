@@ -2,6 +2,13 @@
 //
 // go_board.js
 
+  // Returns a single random element
+  //
+Array.prototype.sample = function() {
+
+  return this[Math.floor(Math.random() * this.length)];
+};
+
 class DivComponent extends HTMLDivElement {
 
   //
@@ -72,6 +79,16 @@ class GoBoard extends DivComponent {
 
   //
   // "protected" methods
+
+  _playStoneSound() {
+
+    let a = new Audio([
+      'sounds/stone1.wav', 'sounds/stone2.wav', 'sounds/stone3.wav',
+      'sounds/stone4.wav', 'sounds/stone5.wav',
+        ].sample());
+
+    a.play();
+  }
 
   _drawGrid() {
 
@@ -167,6 +184,8 @@ class GoBoard extends DivComponent {
     ro.observe(this);
 
     H.onk('body', this._onKey.bind(this));
+
+clog('board:', this);
   }
 
   get size() { return this._atti('-koukai-size', 19); }
