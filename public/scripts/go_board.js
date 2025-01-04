@@ -174,11 +174,35 @@ class GoBoard extends DivComponent {
   //get _svg() { return this._e('svg'); }
 }
 
-class GnuGoBoard extends GoBoard {
+class EngineBoard extends GoBoard {
 
-  #mode = 'idle' // or 'playing'
   #bid = `goban${Date.now()}`
   #player = 'black' // or 'white'
+
+  //
+  // private methods
+
+  //
+  // "protected" methods
+
+  _send(cmd) {
+
+    H.request(
+      'POST', `/gtp/${this.engine}/${this.#bid}`,
+      { command: cmd, engine: this.engine, id: this.#bid },
+      this._onGtp.bind(this));
+  }
+
+  //
+  // public methods
+
+  get engine() { return 'someEngine'; }
+  get boardId() { return this.#bid; }
+}
+
+class GnuGoBoard extends EngineBoard {
+
+  #mode = 'idle' // or 'playing' or 'finished'
 
   //
   // private methods
@@ -189,14 +213,6 @@ class GnuGoBoard extends GoBoard {
   _onGtp(res) {
 
 clog('_onGtp()', res);
-  }
-
-  _send(cmd) {
-
-    H.request(
-      'POST', `/gtp/${d.engine}/${d.id}`,
-      { command: cmd, engine: 'GnuGO', id: this.#bid },
-      this._onGtp.bind(this));
   }
 
   _idleOnKey(ev) {
@@ -231,6 +247,8 @@ clog('_onGtp()', res);
   // public methods
 
   get mode() { return this.#mode; }
+
+  get engine() { return 'GnuGO'; }
 }
 
 customElements.define('go-board', GoBoard, { extends: 'div' });
