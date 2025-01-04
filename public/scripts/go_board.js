@@ -86,17 +86,17 @@ class GoBoard extends DivComponent {
   // 1 . . . . . . . . . 1     BLACK (X) has captured 0 stones
   //   A B C D E F G H J
 
-  _xs = 'ABCDEFGHIJKLMNOPQRST'
+  _xs = 'ABCDEFGHJKLMNOPQRST'
 
   _vertexToXy(vertex) {
 
     let sr = this._stoneDiameter / 2;
 
-    let vx = parseInt(this._xs.indexOf(vertex[0]), 10);
+    let vx = parseInt(this._xs.indexOf(vertex[0]), 10) + 1;
     let vy = parseInt(vertex.slice(1, 3), 10);
 
     let bx = this._xpad + (vx - 1) * this._lineWidth - sr;
-    let by = this._ypad + (19 - vy) * this._lineHeight - sr;
+    let by = this._ypad + (this.size - vy) * this._lineHeight - sr;
 
     return { x: bx, y: by };
   }
@@ -188,8 +188,8 @@ class GoBoard extends DivComponent {
     for (let x = 0; x < s; x++) {
       for (let y = 0; y < s; y++) {
 
-        let xy = `${x + 1},${y}`;
-        let vt = `${this._xs[x + 1]}${19 - y}`;
+        let xy = `${x + 1},${y + 1}`;
+        let vt = `${this._xs[x]}${s - y}`;
 
         Svg.build(
           this._svge,
