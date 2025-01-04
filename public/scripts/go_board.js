@@ -2,7 +2,7 @@
 //
 // go_board.js
 
-class ShownBoard {
+class ShowboardResponse {
 
   #s
 
@@ -252,6 +252,8 @@ class GoBoard extends DivComponent {
               //'pointer-events': 'all' } ]);
       }
     }
+
+    H.c(this, 'div.output');
   }
 
   _onSizeAttChange(name, v0, v1) {
@@ -261,6 +263,8 @@ class GoBoard extends DivComponent {
 
   _onKey(ev) { clog('GoBoard', 'onKey()', ev); };
   _onClick(ev) { clog('GoBoard', 'onClick()', ev.target); }
+
+  _write(s) { H.sett(this, 'div.output', s); }
 
   //
   // public methods
@@ -318,12 +322,14 @@ class GtpBoard extends GoBoard {
 
   _updateBoard(b) {
 
-    let sb = new ShownBoard(b);
+    let r = new ShowboardResponse(b);
 
     H.forEach(this, 'svg image.stone', function(e) {
+
       let v = H.att(e, '-koukai-vertex');
       let c = H.att(e, '-koukai-stone');
-      if (sb[v] !== c) H.remove(e);
+
+      if (r[v] !== c) H.remove(e);
     });
   };
 
@@ -335,15 +341,22 @@ class GtpBoard extends GoBoard {
     clog('_onGtp()', res.data.o.trim());
 
     let c = res.data.c;
+    let c0 = c.split(' ')[0];
     let r = res.data.o.slice(2).trim();
 
-    if (c.match(/^genmove /)) {
+    if (c0 === 'genmove' && r === 'PASS') {
+      this._write(`${this._otherColour(this._player)} passes`);
+    }
+    else if (c0 === 'genmove') {
       let o = c.split(' ')[1];
       this._addStone(o, r);
       this._turn = this._otherColour(o);
     }
-    else if (c === 'showboard') {
+    else if (c0 === 'showboard') {
       this._updateBoard(r);
+    }
+    else if (c0 === 'estimate_score') {
+      this._write(r);
     }
   }
 
@@ -437,7 +450,10 @@ clog('_idleOnClick()', ev.target);
 
   _playingOnKey(ev) {
 
-clog('_playingOnKey()', ev);
+//clog('_playingOnKey()', ev);
+    if (ev.key === 'e') {
+      this._send('estimate_score');
+    }
   }
 
   _onKey(ev) { this[`_${this.#mode}OnKey`](ev); }

@@ -29,5 +29,11 @@ body {
     background-repeat: no-repeat; /* Prevents the image from repeating */
     background-size: cover; /* Ensures the image covers the entire div */
   }
+
+  .output {
+
+    font-family: monospace;
+    color: darkgrey;
+  }
 }
 
