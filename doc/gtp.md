@@ -533,7 +533,9 @@ Arguments: Vertex, optional random seed
 Fails:     invalid vertex
 Returns:   Status in the form of one of the strings "alive", "dead",
            "seki", "white_territory", "black_territory", or "dame".
-final_status_list: Report vertices with a specific final status in a finished game.
+
+### final_status_list: Report vertices with a specific final status in a finished game.
+
 Arguments: Status in the form of one of the strings "alive", "dead",
            "seki", "white_territory", "black_territory", or "dame".
            An optional random seed can be added.

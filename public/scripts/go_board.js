@@ -2,13 +2,6 @@
 //
 // go_board.js
 
-  // Returns a single random element
-  //
-Array.prototype.sample = function() {
-
-  return this[Math.floor(Math.random() * this.length)];
-};
-
 class DivComponent extends HTMLDivElement {
 
   //
@@ -73,12 +66,40 @@ class GoBoard extends DivComponent {
   _ypad = 14;
   _lineThickness = 0.7;
   _starRadius = 4.0 / 2;
+  _stoneDiameter = 22.5;
 
   //
   // private methods
 
   //
   // "protected" methods
+
+  //   A B C D E F G H J
+  // 9 . . . . . . . . . 9
+  // 8 . . . . . . . . . 8
+  // 7 . . + . . . + . . 7
+  // 6 . . . . . . . . . 6
+  // 5 . . . . + . . . . 5
+  // 4 . . . . . . . . . 4
+  // 3 . . + . . . + . . 3
+  // 2 . . . . . . . . . 2     WHITE (O) has captured 0 stones
+  // 1 . . . . . . . . . 1     BLACK (X) has captured 0 stones
+  //   A B C D E F G H J
+
+  _xs = 'ABCDEFGHIJKLMNOPQRST'
+
+  _vertexToXy(vertex) {
+
+    let sr = this._stoneDiameter / 2;
+
+    let vx = parseInt(this._xs.indexOf(vertex[0]), 10);
+    let vy = parseInt(vertex.slice(1, 3), 10);
+
+    let bx = this._xpad + (vx - 1) * this._lineWidth - sr;
+    let by = this._ypad + (19 - vy) * this._lineHeight - sr;
+
+    return { x: bx, y: by };
+  }
 
   _playStoneSound() {
 
@@ -88,6 +109,23 @@ class GoBoard extends DivComponent {
         ].sample());
 
     a.play();
+  }
+
+  _addStone(colour, vertex) {
+
+    let v = this._vertexToXy(vertex);
+
+    let x = v.x + [ -1, 0, 1 ].sample();
+    let y = v.y + [ -1, 0, 1 ].sample();
+
+    Svg.create(
+      this._svge,
+      'image',
+      { x: x, y: y,
+        width: this._stoneDiameter, height: this._stoneDiameter,
+        'xlink:href': `images/${colour}.png` });
+
+    this._playStoneSound();
   }
 
   _drawGrid() {
@@ -103,19 +141,19 @@ class GoBoard extends DivComponent {
     let bh = yp * 2 + s1 * this._lineHeight;
     let bw = xp * 2 + s1 * this._lineWidth;
 
-    let svge = Svg.create(this, 'svg', { viewBox: `0 0 ${bw} ${bh}` });
+    this._svge = Svg.create(this, 'svg', { viewBox: `0 0 ${bw} ${bh}` });
 
     let lh = this._lineHeight;
     let lw = this._lineWidth;
 
     for (let i = 0; i < s; i++) Svg.build( // horizontal lines
-      svge,
+      this._svge,
       [ 'path',
         { d: `M ${xp} ${yp + (i * lh)} L ${xp + s1 * lw} ${yp + (i * lh)}`,
           stroke: 'black', 'stroke-width': this._lineThickness } ]);
 
     for (let i = 0; i < s; i++) Svg.build( // vertical lines
-      svge,
+      this._svge,
       [ 'path',
         { d: `M ${xp + (i * lw)} ${yp} L ${xp + (i * lw)} ${yp + s1 * lh}`,
           stroke: 'black', 'stroke-width': this._lineThickness } ]);
@@ -139,7 +177,7 @@ class GoBoard extends DivComponent {
       let x = xy[0] - 1; let y = xy[1] - 1;
 
       Svg.build(
-        svge,
+        this._svge,
         [ 'circle',
           { cx: xp + x * lw, cy: yp + y * lh, r: this._starRadius,
             fill: 'black', 'stroke-width': 0.3 } ]);
@@ -185,7 +223,8 @@ class GoBoard extends DivComponent {
 
     H.onk('body', this._onKey.bind(this));
 
-clog('board:', this);
+    clog('window.board =', this);
+    window.board = this;
   }
 
   get size() { return this._atti('-koukai-size', 19); }
@@ -193,35 +232,10 @@ clog('board:', this);
   //get _svg() { return this._e('svg'); }
 }
 
-class EngineBoard extends GoBoard {
+class GtpBoard extends GoBoard {
 
   #bid = `goban${Date.now()}`
-  #player = 'black' // or 'white'
-
-  //
-  // private methods
-
-  //
-  // "protected" methods
-
-  _send(cmd) {
-
-    H.request(
-      'POST', `/gtp/${this.engine}/${this.#bid}`,
-      { command: cmd, engine: this.engine, id: this.#bid },
-      this._onGtp.bind(this));
-  }
-
-  //
-  // public methods
-
-  get engine() { return 'someEngine'; }
-  get boardId() { return this.#bid; }
-}
-
-class GnuGoBoard extends EngineBoard {
-
-  #mode = 'idle' // or 'playing' or 'finished'
+  _player = 'black' // or 'white'
 
   //
   // private methods
@@ -231,8 +245,49 @@ class GnuGoBoard extends EngineBoard {
 
   _onGtp(res) {
 
-clog('_onGtp()', res);
+    //clog('_onGtp()', res);
+    clog('_onGtp()', res.data.o.trim());
+
+    let c = res.data.c;
+    let r = res.data.o.slice(2);
+
+    if (c.match(/^genmove /)) {
+      let o = c.split(' ')[1];
+      this._addStone(o, r);
+    }
   }
+
+  _send(...cmds) {
+
+    if (typeof cmds[0] !== 'string') return;
+
+    let t = this;
+
+    H.request(
+      'POST', `/gtp/${this.engine}/${this.#bid}`,
+      { command: cmds[0], engine: this.engine, id: this.#bid },
+      function(res) {
+        t._onGtp(res);
+        t._send(...cmds.slice(1));
+      });
+  }
+
+  //
+  // public methods
+
+  get engine() { return 'someEngine'; }
+  get boardId() { return this.#bid; }
+}
+
+class GnuGoBoard extends GtpBoard {
+
+  #mode = 'idle' // or 'playing' or 'finished'
+
+  //
+  // private methods
+
+  //
+  // "protected" methods
 
   _idleOnKey(ev) {
 
@@ -240,6 +295,10 @@ clog('_onGtp()', res);
     }
     else if (ev.key === 'w') {
       this.#mode = 'playing';
+      this._player = 'white';
+      this._send(
+        `set_random_seed ${Date.now() % 10_000_000}`,
+        'genmove black');
     }
     else if (ev.key === '9') {
       H.satt(this, '-koukai-size', '9x9');
