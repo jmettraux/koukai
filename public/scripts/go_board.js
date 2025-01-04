@@ -182,6 +182,25 @@ class GoBoard extends DivComponent {
           { cx: xp + x * lw, cy: yp + y * lh, r: this._starRadius,
             fill: 'black', 'stroke-width': 0.3 } ]);
     }
+
+    let r = this._stoneDiameter * 0.5 * 0.77;
+
+    for (let x = 0; x < s; x++) {
+      for (let y = 0; y < s; y++) {
+
+        let xy = `${x + 1},${y}`;
+        let vt = `${this._xs[x + 1]}${19 - y}`;
+
+        Svg.build(
+          this._svge,
+          [ 'circle',
+            { cx: xp + x * lw, cy: yp + y * lh, r: r,
+              fill: 'white', 'fill-opacity': '0.0',
+              'data-koukai-xy': xy, 'data-koukai-vertex': vt,
+                } ]);
+              //'pointer-events': 'all' } ]);
+      }
+    }
   }
 
   _onSizeAttChange(name, v0, v1) {
@@ -190,6 +209,7 @@ class GoBoard extends DivComponent {
   }
 
   _onKey(ev) { clog('GoBoard', 'onKey()', ev); };
+  _onClick(ev) { clog('GoBoard', 'onClick()', ev.target); }
 
   //
   // public methods
@@ -222,6 +242,7 @@ class GoBoard extends DivComponent {
     ro.observe(this);
 
     H.onk('body', this._onKey.bind(this));
+    H.onc(this, this._onClick.bind(this));
 
     clog('window.board =', this);
     window.board = this;
@@ -289,6 +310,16 @@ class GnuGoBoard extends GtpBoard {
   //
   // "protected" methods
 
+  _idleOnClick(ev) {
+
+clog('_idleOnClick()', ev.target);
+  }
+
+  _playingOnClick(ev) {
+
+clog('_playingOnClick()', ev.target);
+  }
+
   _idleOnKey(ev) {
 
     if (ev.key === 'b') {
@@ -316,10 +347,11 @@ class GnuGoBoard extends GtpBoard {
 
   _playingOnKey(ev) {
 
-    // TODO
+clog('_playingOnKey()', ev);
   }
 
   _onKey(ev) { this[`_${this.#mode}OnKey`](ev); }
+  _onClick(ev) { this[`_${this.#mode}OnClick`](ev); }
 
   //
   // public methods
