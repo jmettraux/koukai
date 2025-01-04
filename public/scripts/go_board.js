@@ -62,11 +62,12 @@ class GoBoard extends DivComponent {
   _boardHeightToWidth = 454.5 / 424.2;
   _lineHeight = 23.7;
   _lineWidth = 22.0;
-  _xpad = 14;
-  _ypad = 14;
   _lineThickness = 0.7;
   _starRadius = 4.0 / 2;
-  _stoneDiameter = 22.5;
+  //_stoneDiameter = 22.5;
+  _stoneDiameter = 21.7;
+  _xpad = 21.7;
+  _ypad = 21.7;
 
   //
   // private methods
@@ -115,8 +116,8 @@ class GoBoard extends DivComponent {
 
     let v = this._vertexToXy(vertex);
 
-    let x = v.x + [ -1, 0, 1 ].sample();
-    let y = v.y + [ -1, 0, 1 ].sample();
+    let x = v.x + [ -0.63, -0.35, -0.1, 0, 0.1, 0.35, 0.63 ].sample();
+    let y = v.y + [ -0.63, -0.35, -0.1, 0, 0.1, 0.35, 0.63 ].sample();
 
     Svg.create(
       this._svge,
