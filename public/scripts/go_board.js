@@ -2,6 +2,54 @@
 //
 // go_board.js
 
+class ShownBoard {
+
+  #s
+
+  #xs
+  #captured = {} // { black: 0, white: 0 }
+
+  //
+  // private methods
+
+  //
+  // "protected" methods
+
+  //
+  // public methods
+
+  constructor(s) {
+
+    //super();
+
+    this.#s = s;
+
+    for (let l of s.split('\n')) {
+
+      let m = l.match(/(BLACK|WHITE) .+ has captured (\d+) stones/);
+      if (m) this.#captured[m[1].toLowerCase()] = parseInt(m[2], 10);
+
+      let ss = l.split(' '); while (ss[0] === '') ss = ss.slice(1);
+
+      if (( ! this.#xs) && ss[0] === 'A') {
+        this.#xs = ss.filter(e => e.length > 0);
+        continue;
+      }
+
+      if (ss.length < 1) continue;
+      if ( ! ss[0].match(/^\d+$/)) continue;
+
+      let y = parseInt(ss[0], 10);
+      for (let x = 0, xl = this.#xs.length; x < xl; x++) {
+        let vx = this.#xs[x];
+        let c = ss[x + 1];
+        let v = `${vx}${y}`;
+        if (c === 'X' || c === 'O') this[v] = c;
+      }
+    }
+  }
+}
+
 class DivComponent extends HTMLDivElement {
 
   //
@@ -124,7 +172,9 @@ class GoBoard extends DivComponent {
       'image',
       { x: x, y: y,
         width: this._stoneDiameter, height: this._stoneDiameter,
-        'xlink:href': `images/${colour}.png` });
+        'xlink:href': `images/${colour}.png`, class: 'stone',
+        'data-koukai-vertex': vertex,
+        'data-koukai-stone': colour === 'black' ? 'X' : 'O' });
 
     this._playStoneSound();
   }
@@ -266,6 +316,17 @@ class GtpBoard extends GoBoard {
   //
   // "protected" methods
 
+  _updateBoard(b) {
+
+    let sb = new ShownBoard(b);
+
+    H.forEach(this, 'svg image.stone', function(e) {
+      let v = H.att(e, '-koukai-vertex');
+      let c = H.att(e, '-koukai-stone');
+      if (sb[v] !== c) H.remove(e);
+    });
+  };
+
   _otherColour(c) { return c.toLowerCase() === 'black' ? 'white' : 'black'; }
 
   _onGtp(res) {
@@ -274,12 +335,15 @@ class GtpBoard extends GoBoard {
     clog('_onGtp()', res.data.o.trim());
 
     let c = res.data.c;
-    let r = res.data.o.slice(2);
+    let r = res.data.o.slice(2).trim();
 
     if (c.match(/^genmove /)) {
       let o = c.split(' ')[1];
       this._addStone(o, r);
       this._turn = this._otherColour(o);
+    }
+    else if (c === 'showboard') {
+      this._updateBoard(r);
     }
   }
 
@@ -342,7 +406,8 @@ clog('_idleOnClick()', ev.target);
     this._send(
       `play ${this._player} ${v}`,
       Math.random() * 10_000,
-      `genmove ${this._otherColour(this._player)}`);
+      `genmove ${this._otherColour(this._player)}`,
+      'showboard');
   }
 
   _idleOnKey(ev) {
