@@ -257,12 +257,15 @@ class GtpBoard extends GoBoard {
 
   #bid = `goban${Date.now()}`
   _player = 'black' // or 'white'
+  _turn = 'black' // or 'white'
 
   //
   // private methods
 
   //
   // "protected" methods
+
+  _otherColour(c) { return c.toLowerCase() === 'black' ? 'white' : 'black'; }
 
   _onGtp(res) {
 
@@ -275,22 +278,32 @@ class GtpBoard extends GoBoard {
     if (c.match(/^genmove /)) {
       let o = c.split(' ')[1];
       this._addStone(o, r);
+      this._turn = this._otherColour(o);
     }
   }
 
   _send(...cmds) {
 
-    if (typeof cmds[0] !== 'string') return;
+    let c0 = cmds[0];
+
+    if (c0 === undefined) return;
 
     let t = this;
 
-    H.request(
-      'POST', `/gtp/${this.engine}/${this.#bid}`,
-      { command: cmds[0], engine: this.engine, id: this.#bid },
-      function(res) {
-        t._onGtp(res);
-        t._send(...cmds.slice(1));
-      });
+    if (typeof c0 === 'number') {
+
+      window.setTimeout(function() { t._send(...cmds.slice(1)); }, c0)
+    }
+    else {
+
+      H.request(
+        'POST', `/gtp/${this.engine}/${this.#bid}`,
+        { command: cmds[0], engine: this.engine, id: this.#bid },
+        function(res) {
+          t._onGtp(res);
+          t._send(...cmds.slice(1));
+        });
+    }
   }
 
   //
@@ -317,7 +330,18 @@ clog('_idleOnClick()', ev.target);
 
   _playingOnClick(ev) {
 
-clog('_playingOnClick()', ev.target);
+//clog('_playingOnClick()', ev.target);
+    let v = H.att(ev.target, '-koukai-vertex');
+
+    if ( ! v) return;
+    if (this._turn !== this._player) return;
+
+    this._addStone(this._player, v);
+
+    this._send(
+      `play ${this._player} ${v}`,
+      Math.random() * 10_000,
+      `genmove ${this._otherColour(this._player)}`);
   }
 
   _idleOnKey(ev) {
