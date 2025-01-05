@@ -276,6 +276,7 @@ class GoBoard extends DivComponent {
 
   _onSizeAttChange(name, v0, v1) {
 
+    this._send(`boardsize ${v1.split('x')[0]}`);
     this._drawGrid();
   }
 
