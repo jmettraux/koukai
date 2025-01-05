@@ -17,13 +17,17 @@ var Goban = (function() {
 
   this.init = function() {
 
-    let gbe = new GnuGoBoard();
-    H.satt(gbe, 'is', 'gnu-go-board');
+    let ps = new URLSearchParams(window.location.search);
 
-    //H.satt(gbe, 'data-koukai-size', '9x9');
-    //H.satt(gbe, 'data-koukai-size', '13x13');
-    H.satt(gbe, 'data-koukai-size', '19x19');
-      //
+    let size = ps.get('size') || '19x19'; size =
+      size.match(/19/) ? '19x19' :
+      size.match(/13/) ? '13x13' :
+      size.match(/9/) ? '9x9' :
+      '19x19';
+
+    let gbe = new GnuGoBoard(); H.satt(gbe, 'is', 'gnu-go-board');
+    H.satt(gbe, 'data-koukai-size', size);
+
     H.elt('#goban').appendChild(gbe);
   };
 
