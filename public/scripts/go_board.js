@@ -150,14 +150,14 @@ class GoBoard extends DivComponent {
     return { x: bx, y: by };
   }
 
+  _stoneSounds = [
+    'sounds/stone1.wav', 'sounds/stone2.wav', 'sounds/stone3.wav',
+    'sounds/stone4.wav', 'sounds/stone5.wav',
+      ].map(s => new Audio(s));
+
   _playStoneSound() {
 
-    let a = new Audio([
-      'sounds/stone1.wav', 'sounds/stone2.wav', 'sounds/stone3.wav',
-      'sounds/stone4.wav', 'sounds/stone5.wav',
-        ].sample());
-
-    a.play();
+    this._stoneSounds.sample().play();
   }
 
   _addStone(colour, vertex) {
