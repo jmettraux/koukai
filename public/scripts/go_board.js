@@ -346,6 +346,8 @@ class GtpBoard extends GoBoard {
 
     if (c0 === 'genmove' && r === 'PASS') {
       this._write(`${this._otherColour(this._player)} passes`);
+      this._turn = this._otherColour(o);
+      H.addc(this, '.inputting');
     }
     else if (c0 === 'genmove') {
       let o = c.split(' ')[1];
@@ -411,9 +413,9 @@ class GnuGoBoard extends GtpBoard {
     let s = this.size;
     let v = H.att(ev.target, '-koukai-vertex');
 
-    if (s === 9) return [ 'G7', 'G8', 'H7', 'H8' ].includes(v);
-    if (s === 13) return [ 'K10', 'K11', 'L10', 'L11' ].includes(v);
     if (s === 19) return [ 'Q16', 'Q17', 'R16', 'R17' ].includes(v);
+    if (s === 13) return [ 'K10', 'K11', 'L10', 'L11' ].includes(v);
+    if (s === 9) return [ 'E5', 'G7', 'G8', 'H7', 'H8' ].includes(v);
     return false;
   }
 
@@ -485,8 +487,13 @@ class GnuGoBoard extends GtpBoard {
   _playingOnKey(ev) {
 
 //clog('_playingOnKey()', ev);
+    let ing = H.hasc(this, '.inputting');
+
     if (ev.key === 'e') {
       this._send('estimate_score');
+    }
+    else if (ev.key === 'p' && ing) {
+      this._doPlay('pass');
     }
   }
 
