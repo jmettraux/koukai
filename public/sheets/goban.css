@@ -49,3 +49,9 @@ body {
   }
 }
 
+.go-board[is].playing svg {
+
+  /*cursor: pointer;*/
+  cursor: crosshair;
+}
+

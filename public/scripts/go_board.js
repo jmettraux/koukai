@@ -351,6 +351,7 @@ class GtpBoard extends GoBoard {
       let o = c.split(' ')[1];
       this._addStone(o, r);
       this._turn = this._otherColour(o);
+      H.addc(this, '.playing');
     }
     else if (c0 === 'showboard') {
       this._updateBoard(r);
@@ -413,6 +414,8 @@ clog('_idleOnClick()', ev.target);
 
     if ( ! v) return;
     if (this._turn !== this._player) return;
+
+    H.remc(this, '.playing');
 
     this._addStone(this._player, v);
 
