@@ -28,6 +28,18 @@ body {
     background-image: url('/images/kaya.jpg');
     background-repeat: no-repeat; /* Prevents the image from repeating */
     background-size: cover; /* Ensures the image covers the entire div */
+
+    .star-point {
+      fill: black;
+      stroke-width: 0.3;
+    }
+    .intersection {
+      fill: white;
+      fill-opacity: 0.0;
+    }
+    .line {
+      stroke: black;
+    }
   }
 
   .output {

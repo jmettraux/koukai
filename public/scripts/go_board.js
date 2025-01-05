@@ -164,8 +164,8 @@ class GoBoard extends DivComponent {
 
     let v = this._vertexToXy(vertex);
 
-    let x = v.x + [ -0.63, -0.35, -0.1, 0, 0.1, 0.35, 0.63 ].sample();
-    let y = v.y + [ -0.63, -0.35, -0.1, 0, 0.1, 0.35, 0.63 ].sample();
+    let x = v.x + [ -0.56, -0.35, -0.1, 0, 0.1, 0.35, 0.56 ].sample();
+    let y = v.y + [ -0.56, -0.35, -0.1, 0, 0.1, 0.35, 0.56 ].sample();
 
     Svg.create(
       this._svge,
@@ -201,13 +201,13 @@ class GoBoard extends DivComponent {
       this._svge,
       [ 'path',
         { d: `M ${xp} ${yp + (i * lh)} L ${xp + s1 * lw} ${yp + (i * lh)}`,
-          stroke: 'black', 'stroke-width': this._lineThickness } ]);
+          class: 'line', 'stroke-width': this._lineThickness } ]);
 
     for (let i = 0; i < s; i++) Svg.build( // vertical lines
       this._svge,
       [ 'path',
         { d: `M ${xp + (i * lw)} ${yp} L ${xp + (i * lw)} ${yp + s1 * lh}`,
-          stroke: 'black', 'stroke-width': this._lineThickness } ]);
+          class: 'line', 'stroke-width': this._lineThickness } ]);
 
     let stars =
       s === 19 ? [
@@ -231,7 +231,7 @@ class GoBoard extends DivComponent {
         this._svge,
         [ 'circle',
           { cx: xp + x * lw, cy: yp + y * lh, r: this._starRadius,
-            fill: 'black', 'stroke-width': 0.3 } ]);
+            class: 'star-point' } ]);
     }
 
     let r = this._stoneDiameter * 0.5 * 0.77;
@@ -246,7 +246,7 @@ class GoBoard extends DivComponent {
           this._svge,
           [ 'circle',
             { cx: xp + x * lw, cy: yp + y * lh, r: r,
-              fill: 'white', 'fill-opacity': '0.0',
+              class: 'intersection',
               'data-koukai-xy': xy, 'data-koukai-vertex': vt,
                 } ]);
               //'pointer-events': 'all' } ]);
