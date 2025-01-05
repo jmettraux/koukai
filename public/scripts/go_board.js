@@ -162,6 +162,14 @@ class GoBoard extends DivComponent {
     this._stoneSounds.sample().play();
   }
 
+  _reHighlightStone() {
+
+    let se = H.elt(this, 'svg .stone.highlighted');
+
+    H.remc(se, '.highlighted');
+    window.setTimeout(function() { H.addc(se, '.highlighted'); }, 500);
+  }
+
   _highlightStone(vertex) {
 
     H.remc(this, 'svg .stone.highlighted', '.highlighted');
@@ -505,6 +513,9 @@ class GnuGoBoard extends GtpBoard {
     }
     else if (ev.key === 'p' && ing) {
       this._doPlay('pass');
+    }
+    else if (ev.key === '?' && ing) {
+      this._reHighlightStone();
     }
   }
 
