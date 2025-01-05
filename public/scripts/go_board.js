@@ -369,7 +369,11 @@ class GtpBoard extends GoBoard {
 
     let t = this;
 
-    if (typeof c0 === 'number') {
+    if (c0 === null) {
+
+      t._send(...cmds.slice(1));
+    }
+    else if (typeof c0 === 'number') {
 
       window.setTimeout(function() { t._send(...cmds.slice(1)); }, c0)
     }
@@ -402,9 +406,44 @@ class GnuGoBoard extends GtpBoard {
   //
   // "protected" methods
 
+  _isBlackStart(ev) {
+
+    let s = this.size;
+    let v = H.att(ev.target, '-koukai-vertex');
+
+    if (s === 9) return [ 'G7', 'G8', 'H7', 'H8' ].includes(v);
+    if (s === 13) return [ 'K10', 'K11', 'L10', 'L11' ].includes(v);
+    if (s === 19) return [ 'Q16', 'Q17', 'R16', 'R17' ].includes(v);
+    return false;
+  }
+
+  _doPlay(vertex, pre=null) {
+
+    H.remc(this, '.playing');
+
+    this._addStone(this._player, vertex);
+
+    this._send(
+      pre,
+      `play ${this._player} ${vertex}`,
+      'showboard',
+      Math.random() * 6.3 * 1_000,
+      `genmove ${this._otherColour(this._player)}`,
+      'showboard');
+  }
+
   _idleOnClick(ev) {
 
-clog('_idleOnClick()', ev.target);
+//clog('_idleOnClick()', ev.target);
+    if (this._isBlackStart(ev)) {
+
+      let v = H.att(ev.target, '-koukai-vertex');
+
+      this.#mode = 'playing';
+      this._player = 'black';
+
+      this._doPlay(v, `set_random_seed ${Date.now() % 10_000_000}`);
+    }
   }
 
   _playingOnClick(ev) {
@@ -415,16 +454,7 @@ clog('_idleOnClick()', ev.target);
     if ( ! v) return;
     if (this._turn !== this._player) return;
 
-    H.remc(this, '.playing');
-
-    this._addStone(this._player, v);
-
-    this._send(
-      `play ${this._player} ${v}`,
-      'showboard',
-      Math.random() * 6.3 * 1_000,
-      `genmove ${this._otherColour(this._player)}`,
-      'showboard');
+    this._doPlay(v);
   }
 
   _idleOnKey(ev) {
