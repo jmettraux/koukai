@@ -139,6 +139,8 @@ class GoBoard extends DivComponent {
 
   _vertexToXy(vertex) {
 
+    if (vertex === 'pass') return null;
+
     let sr = this._stoneDiameter / 2;
 
     let vx = parseInt(this._xs.indexOf(vertex[0]), 10) + 1;
@@ -168,7 +170,7 @@ class GoBoard extends DivComponent {
 
   _addStone(colour, vertex) {
 
-    let v = this._vertexToXy(vertex);
+    let v = this._vertexToXy(vertex); if ( ! v) return;
 
     let a = [ -0.49, -0.35, -0.1, -0.1, 0, 0, 0, 0.1, 0.1, 0.35, 0.49 ]
 
