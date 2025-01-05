@@ -16,12 +16,12 @@ body {
 }
 
 @keyframes oscillate {
-  0% { transform: translate(0.9px, 0px); }
-  20% { transform: translate(0.5px, 0px); }
-  40% { transform: translate(0.0px, 0px); }
-  60% { transform: translate(-0.5px, 0px); }
-  80% { transform: translate(-0.9px, 0px); }
-  100% { transform: translate(0.0px, 0px); }
+  0% { transform: translate(0.70px, 0px); }
+  20% { transform: translate(0.35px, 0px); }
+  40% { transform: translate(0.00px, 0px); }
+  60% { transform: translate(-0.35px, 0px); }
+  80% { transform: translate(-0.70px, 0px); }
+  100% { transform: translate(0.00px, 0px); }
 }
 
 .go-board[is] {
@@ -43,7 +43,7 @@ body {
     }
     image.stone.highlighted {
       transform-origin: center;
-      animation: oscillate 0.1s 21 linear;
+      animation: oscillate 0.077s 10 ease-in-out;
     }
 
     .star-point {
