@@ -351,7 +351,7 @@ class GtpBoard extends GoBoard {
       let o = c.split(' ')[1];
       this._addStone(o, r);
       this._turn = this._otherColour(o);
-      H.addc(this, '.playing');
+      H.addc(this, '.inputting');
     }
     else if (c0 === 'showboard') {
       this._updateBoard(r);
@@ -419,7 +419,7 @@ class GnuGoBoard extends GtpBoard {
 
   _doPlay(vertex, pre=null) {
 
-    H.remc(this, '.playing');
+    H.remc(this, '.inputting');
 
     this._addStone(this._player, vertex);
 

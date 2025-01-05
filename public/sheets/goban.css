@@ -49,7 +49,7 @@ body {
   }
 }
 
-.go-board[is].playing svg {
+.go-board[is].inputting svg .intersection {
 
   /*cursor: pointer;*/
   cursor: crosshair;
