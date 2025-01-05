@@ -29,6 +29,10 @@ body {
     background-repeat: no-repeat; /* Prevents the image from repeating */
     background-size: cover; /* Ensures the image covers the entire div */
 
+    image.stone {
+      filter: drop-shadow(1px 1px 2px black);
+    }
+
     .star-point {
       fill: black;
       stroke-width: 0.3;
