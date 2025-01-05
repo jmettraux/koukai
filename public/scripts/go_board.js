@@ -418,7 +418,8 @@ clog('_idleOnClick()', ev.target);
 
     this._send(
       `play ${this._player} ${v}`,
-      Math.random() * 10_000,
+      'showboard',
+      Math.random() * 6.3 * 1_000,
       `genmove ${this._otherColour(this._player)}`,
       'showboard');
   }
