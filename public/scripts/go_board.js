@@ -160,6 +160,12 @@ class GoBoard extends DivComponent {
     this._stoneSounds.sample().play();
   }
 
+  _highlightStone(vertex) {
+
+    H.remc(this, 'svg .stone.highlighted', '.highlighted');
+    H.addc(this, `svg .stone[-koukai-vertex="${vertex}"]`, '.highlighted');
+  }
+
   _addStone(colour, vertex) {
 
     let v = this._vertexToXy(vertex);
@@ -352,6 +358,7 @@ class GtpBoard extends GoBoard {
     else if (c0 === 'genmove') {
       let o = c.split(' ')[1];
       this._addStone(o, r);
+      this._highlightStone(r);
       this._turn = this._otherColour(o);
       H.addc(this, '.inputting');
     }

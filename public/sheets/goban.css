@@ -15,6 +15,15 @@ body {
   }
 }
 
+@keyframes oscillate {
+  0% { transform: translate(0.9px, 0px); }
+  20% { transform: translate(0.5px, 0px); }
+  40% { transform: translate(0.0px, 0px); }
+  60% { transform: translate(-0.5px, 0px); }
+  80% { transform: translate(-0.9px, 0px); }
+  100% { transform: translate(0.0px, 0px); }
+}
+
 .go-board[is] {
 
   margin: 2.1rem auto;
@@ -31,6 +40,10 @@ body {
 
     image.stone {
       filter: drop-shadow(1px 1px 2px black);
+    }
+    image.stone.highlighted {
+      transform-origin: center;
+      animation: oscillate 0.1s 21 linear;
     }
 
     .star-point {

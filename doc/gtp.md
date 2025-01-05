@@ -138,6 +138,7 @@ Returns:   list of vertices with handicap stones
 Status:    GTP version 2 standard command.
 
 ### place_free_handicap: Choose free placement handicap stones and put them on the board.
+
 Arguments: number of handicap stones
 Fails:     invalid number of stones
 Returns:   list of vertices with handicap stones
