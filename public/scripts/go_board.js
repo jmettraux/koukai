@@ -170,8 +170,10 @@ class GoBoard extends DivComponent {
 
     let v = this._vertexToXy(vertex);
 
-    let x = v.x + [ -0.56, -0.35, -0.1, 0, 0.1, 0.35, 0.56 ].sample();
-    let y = v.y + [ -0.56, -0.35, -0.1, 0, 0.1, 0.35, 0.56 ].sample();
+    let a = [ -0.49, -0.35, -0.1, -0.1, 0, 0, 0, 0.1, 0.1, 0.35, 0.49 ]
+
+    let x = v.x + a.sample();
+    let y = v.y + a.sample();
 
     Svg.create(
       this._svge,
@@ -352,7 +354,7 @@ class GtpBoard extends GoBoard {
 
     if (c0 === 'genmove' && r === 'PASS') {
       this._write(`${this._otherColour(this._player)} passes`);
-      this._turn = this._otherColour(o);
+      this._turn = this._otherColour(this._player);
       H.addc(this, '.inputting');
     }
     else if (c0 === 'genmove') {
