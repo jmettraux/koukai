@@ -310,7 +310,14 @@ class GoBoard extends DivComponent {
 
     let ro = new ResizeObserver(function(es) {
       for (let e of es) {
-        let h = e.contentRect.width * e.target._boardHeightToWidth;
+        let w = e.contentRect.width;
+        let h = w * e.target._boardHeightToWidth;
+        if (h > window.innerHeight) {
+          h = window.innerHeight * 0.9;
+          w = h / e.target._boardHeightToWidth;
+        }
+        e.target.style.width = `${w}px`;
+        e.target.style.minWidth = `${w}px`;
         e.target.style.height = `${h}px`;
         e.target.style.minHeight = `${h}px`; } });
     ro.observe(this);
