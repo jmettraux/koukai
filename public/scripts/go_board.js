@@ -114,8 +114,8 @@ class GoBoard extends DivComponent {
   _starRadius = 4.0 / 2;
   //_stoneDiameter = 22.5;
   _stoneDiameter = 21.7;
-  _xpad = 21.7;
-  _ypad = 21.7;
+  _xpad = 22.5 * 0.7;
+  _ypad = 22.5 * 0.7;
 
   //
   // private methods
