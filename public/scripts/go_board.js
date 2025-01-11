@@ -364,7 +364,7 @@ class GtpBoard extends GoBoard {
   _onGtp(res) {
 
     //clog('_onGtp()', res);
-    clog('_onGtp()', res.data.o.trim());
+    clog('_onGtp()', res.data.c, res.data.o.trim());
 
     let c = res.data.c;
     let c0 = c.split(' ')[0];
@@ -388,6 +388,10 @@ class GtpBoard extends GoBoard {
     else if (c0 === 'estimate_score') {
       this._write(r);
     }
+    else if (c0 === 'is_legal') {
+      if (r === '0') return false;
+    }
+    return true;
   }
 
   _send(...cmds) {
@@ -406,14 +410,18 @@ class GtpBoard extends GoBoard {
 
       window.setTimeout(function() { t._send(...cmds.slice(1)); }, c0)
     }
+    else if (typeof c0 === 'function') {
+      let r = c0.bind(this)();
+      if (r != false) t._send(...cmds.slice(1));
+    }
     else {
 
       H.request(
         'POST', `/gtp/${this.engine}/${this.#bid}`,
         { command: cmds[0], engine: this.engine, id: this.#bid },
         function(res) {
-          t._onGtp(res);
-          t._send(...cmds.slice(1));
+          let r = t._onGtp(res);
+          if (r !== false) t._send(...cmds.slice(1));
         });
     }
   }
@@ -483,7 +491,9 @@ class GnuGoBoard extends GtpBoard {
     if ( ! v) return;
     if (this._turn !== this._player) return;
 
-    this._doPlay(v);
+    this._send(
+      `is_legal ${this._player} ${v}`,
+      function() { this._doPlay(v); });
   }
 
   _idleOnKey(ev) {
