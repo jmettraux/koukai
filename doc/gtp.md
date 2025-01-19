@@ -241,6 +241,7 @@ Returns:   List of moves + invariant hash as a hexadecimal number,
            one pair of move + hash per line.
 
 ### trymove: Play a stone of the given color at the given vertex.
+
 Arguments: move (color + vertex)
 Fails:     invalid color, invalid vertex, illegal move
 Returns:   nothing
