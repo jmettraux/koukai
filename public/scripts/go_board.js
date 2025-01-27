@@ -136,6 +136,7 @@ class GoBoard extends DivComponent {
   //   A B C D E F G H J
 
   _xs = 'ABCDEFGHJKLMNOPQRST'
+  _as = this._xs.toLowerCase()
 
   _vertexToXy(vertex) {
 
@@ -259,6 +260,7 @@ class GoBoard extends DivComponent {
 
         let xy = `${x + 1},${y + 1}`;
         let vt = `${this._xs[x]}${s - y}`;
+        let sgf = `${this._as[x]}${this._as[y]}`;
 
         Svg.build(
           this._svge,
@@ -266,6 +268,7 @@ class GoBoard extends DivComponent {
             { cx: xp + x * lw, cy: yp + y * lh, r: r,
               class: 'intersection',
               'data-koukai-xy': xy, 'data-koukai-vertex': vt,
+              'data-koukai-sgf': sgf
                 } ]);
               //'pointer-events': 'all' } ]);
       }
