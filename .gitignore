@@ -17,7 +17,9 @@ pkg/
 .todo.md
 
 .chat.md
+.deep.md
 .openai.*
+.deepseek.*
 
 #Gemfile.lock
 
