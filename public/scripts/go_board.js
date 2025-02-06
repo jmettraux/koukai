@@ -389,7 +389,8 @@ class GtpBoard extends GoBoard {
       this._updateBoard(r);
     }
     else if (c0 === 'estimate_score') {
-      this._write(r);
+      //this._write(r);
+      this._write(r.split(' ')[0]);
     }
     else if (c0 === 'is_legal') {
       if (r === '0') return false;
@@ -467,9 +468,11 @@ class GnuGoBoard extends GtpBoard {
       pre,
       `play ${this._player} ${vertex}`,
       'showboard',
+      'estimate_score',
       Math.random() * 6.3 * 1_000,
       `genmove ${this._otherColour(this._player)}`,
-      'showboard');
+      'showboard',
+      'estimate_score');
   }
 
   _idleOnClick(ev) {
