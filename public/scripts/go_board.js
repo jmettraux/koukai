@@ -378,6 +378,9 @@ class GtpBoard extends GoBoard {
       this._turn = this._otherColour(this._player);
       H.addc(this, '.inputting');
     }
+    else if (c0 === 'genmove' && r === 'resign') {
+      this._write(`${this._otherColour(this._player)} RESIGNS`);
+    }
     else if (c0 === 'genmove') {
       let o = c.split(' ')[1];
       this._addStone(o, r);
