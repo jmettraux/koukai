@@ -392,8 +392,10 @@ class GtpBoard extends GoBoard {
       this._updateBoard(r);
     }
     else if (c0 === 'estimate_score') {
-      //this._write(r);
       this._write(r.split(' ')[0]);
+    }
+    else if (c0 === 'final_score') {
+      this._write('final: ' + r);
     }
     else if (c0 === 'is_legal') {
       if (r === '0') return false;
@@ -537,6 +539,10 @@ class GnuGoBoard extends GtpBoard {
 
     if (ev.key === 'e') {
       this._send('estimate_score');
+    }
+    else if (ev.key === 'f' && ing) {
+      H.remc(this, '.inputting');
+      this._send('final_score');
     }
     else if (ev.key === 'p' && ing) {
       this._doPlay('pass');

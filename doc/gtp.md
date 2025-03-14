@@ -555,7 +555,8 @@ Status:    GTP version 2 standard command.
 Arguments: None
 Fails:     never
 Returns:   upper and lower bounds for the score
-experimental_score: Estimate the score, taking into account which player moves next
+
+### experimental_score: Estimate the score, taking into account which player moves next
 Arguments: Color to play
 Fails:     Invalid color
 Returns:   Score.
