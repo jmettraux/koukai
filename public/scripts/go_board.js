@@ -382,6 +382,7 @@ class GtpBoard extends GoBoard {
       this._write(`${this._otherColour(this._player)} RESIGNS`);
     }
     else if (c0 === 'genmove') {
+      this._moveCount = (this._moveCount || 0) + 1;
       let o = c.split(' ')[1];
       this._addStone(o, r);
       this._highlightStone(r);
@@ -392,7 +393,7 @@ class GtpBoard extends GoBoard {
       this._updateBoard(r);
     }
     else if (c0 === 'estimate_score') {
-      this._write(r.split(' ')[0]);
+      this._write(`${r.split(' ')[0]} after ${this._moveCount} moves`);
     }
     else if (c0 === 'final_score') {
       this._write('final: ' + r);
@@ -464,6 +465,8 @@ class GnuGoBoard extends GtpBoard {
   }
 
   _doPlay(vertex, pre=null) {
+
+    this._moveCount = (this._moveCount || 0) + 1;
 
     H.remc(this, '.inputting');
 
