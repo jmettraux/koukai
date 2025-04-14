@@ -342,6 +342,7 @@ class GtpBoard extends GoBoard {
   #bid = `goban${Date.now()}`
   _player = 'black' // or 'white'
   _turn = 'black' // or 'white'
+  #scores = [ 0.0 ];
 
   //
   // private methods
@@ -360,6 +361,14 @@ class GtpBoard extends GoBoard {
 
       if (r[v] !== c) H.remove(e);
     });
+  };
+
+  _updateScore(r) {
+    let m = r.match(/(B|W)\+(\d+\.\d)/);
+    let s = (m[1] === 'W' ? -1 : 1 ) * parseFloat(m[2]);
+    let d = s - this.#scores[this.#scores.length - 1];
+    this.#scores.push(s);
+clog(this.#scores, d);
   };
 
   _otherColour(c) { return c.toLowerCase() === 'black' ? 'white' : 'black'; }
@@ -393,6 +402,7 @@ class GtpBoard extends GoBoard {
       this._updateBoard(r);
     }
     else if (c0 === 'estimate_score') {
+      this._updateScore(r);
       this._write(`${r.split(' ')[0]} after ${this._moveCount} moves`);
     }
     else if (c0 === 'final_score') {
