@@ -61,6 +61,13 @@ class Koukai::Endpoints < Sinatra::Base
     JSON.dump(o)
   end
 
+  def jscript(paths)
+
+    content_type 'application/javascript'
+
+    paths.map { |path| File.read(path) }.join("\n")
+  end
+
   #
   # the actual endpoints
 
@@ -82,6 +89,26 @@ class Koukai::Endpoints < Sinatra::Base
   post '/gtp/:engine/:id' do
 
     json engine(param(:engine), param(:id)).post(body_data)
+  end
+
+  get '/script/goban' do
+
+    jscript %w[
+      scripts/koukai.js
+      scripts/goban.js
+      scripts/svg.js
+      scripts/div_component.js
+      scripts/go_board.js
+      scripts/score_tracker.js
+        ]
+  end
+
+  get '/script/console' do
+
+    jscript %w[
+      scripts/koukai.js
+      scripts/console.js
+        ]
   end
 end
 
