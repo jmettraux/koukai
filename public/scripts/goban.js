@@ -29,6 +29,12 @@ var Goban = (function() {
     H.satt(gbe, 'data-koukai-size', size);
 
     H.elt('#goban').appendChild(gbe);
+
+    let ste = new ScoreTracker(); H.satt(ste, 'is', 'score-tracker');
+
+    H.elt('#goban').appendChild(ste);
+
+    gbe.scoreTracker = ste;
   };
 
   //

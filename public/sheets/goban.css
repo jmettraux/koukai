@@ -72,3 +72,7 @@ body {
   cursor: crosshair;
 }
 
+[is="score-tracker"] {
+  text-align: center;
+}
+
