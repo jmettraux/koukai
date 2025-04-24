@@ -8,8 +8,9 @@ class ScoreTracker extends DivComponent {
 
   #score = [ 0 ];
 
+  #height = 100;
   #stick_xf = 2.0;
-  #stick_yf = 1.0;
+  #stick_yf = 2.0;
 
   //
   // private methods
@@ -22,14 +23,33 @@ class ScoreTracker extends DivComponent {
 
   connectedCallback() {
 
-    this.#graph = Svg.create(this, 'svg', { viewBox: '0 0 300 100' });
+    this.#graph =
+      Svg.create(this, 'svg', { viewBox: `0 0 300 ${this.#height}` });
   }
 
-  push(ge, moveCount, delta) {
+  push(ge, moveCount, stone, delta) {
 
     this.#graph.style.width = ge.style.width;
-    this.#score[moveCount] = delta;
-clog('this.#score', ge, this.#score);
+    let a = [ stone[0], stone[1], delta ];
+    this.#score[moveCount] = a;
+clog('push()', a);
+
+    let c = 'plus';
+    let h = this.#stick_yf * delta;
+    let x = this.#stick_xf * moveCount;
+    let y = this.#height / 2 - h;
+    let t = `${a[0]} ${a[1]} ${a[2] >= 0 ? '+' : ''}${a[2]}`;
+      //
+    if (delta < 0) {
+      c = 'minus';
+      h = -h;
+      y = this.#height / 2;
+    }
+
+    Svg.create(
+      this.#graph,
+      'rect',
+      { class: c, x: x, y: y, width: this.#stick_xf, height: h, title: t })
   }
 }
 

@@ -79,7 +79,19 @@ body {
   svg {
     width: 0; /* initially */
     height: 3.5rem;
-    background-color: #eeeeee;
+    background-color: #999999;
+
+    rect.plus {
+    }
+    rect.minus {
+      fill: white;
+    }
+    rect.plus:hover {
+      fill: #bbbbbb;
+    }
+    rect.minus:hover {
+      fill: blue;
+    }
   }
 }
 

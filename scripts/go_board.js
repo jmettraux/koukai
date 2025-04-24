@@ -141,6 +141,8 @@ class GoBoard extends DivComponent {
 
   _addStone(colour, vertex) {
 
+    this._lastStone = [ colour, vertex ];
+
     let v = this._vertexToXy(vertex); if ( ! v) return;
 
     let a = [ -0.49, -0.35, -0.1, -0.1, 0, 0, 0, 0.1, 0.1, 0.35, 0.49 ]
@@ -332,7 +334,8 @@ class GtpBoard extends GoBoard {
     let d = s - this.#scores[this.#scores.length - 1];
     this.#scores.push(s);
 clog(this.#scores, d);
-    if (this.#scoreTracker) this.#scoreTracker.push(this, this._moveCount, s);
+    if (this.#scoreTracker) this.#scoreTracker.push(
+      this, this._moveCount, this._lastStone, s);
   };
 
   _otherColour(c) { return c.toLowerCase() === 'black' ? 'white' : 'black'; }
