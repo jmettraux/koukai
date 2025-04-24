@@ -32,7 +32,7 @@ class ScoreTracker extends DivComponent {
     this.#graph.style.width = ge.style.width;
     let a = [ stone[0], stone[1], delta ];
     this.#score[moveCount] = a;
-clog('push()', a);
+//clog('push()', a);
 
     let c = 'plus';
     let h = this.#stick_yf * delta;
@@ -46,10 +46,15 @@ clog('push()', a);
       y = this.#height / 2;
     }
 
-    Svg.create(
+    let se = Svg.create(
       this.#graph,
       'rect',
-      { class: c, x: x, y: y, width: this.#stick_xf, height: h, title: t })
+      { class: c, x: x, y: y, width: this.#stick_xf, height: h })
+    Svg.create(
+      se,
+      'title',
+      {},
+      t);
   }
 }
 
