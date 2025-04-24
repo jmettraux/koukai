@@ -26,7 +26,7 @@ body {
 
 .go-board[is] {
 
-  margin: 2.1rem auto;
+  margin: 1.5rem auto;
   width: 90%;
 
   svg {
@@ -73,6 +73,13 @@ body {
 }
 
 [is="score-tracker"] {
+
   text-align: center;
+
+  svg {
+    width: 0; /* initially */
+    height: 3.5rem;
+    background-color: #eeeeee;
+  }
 }
 

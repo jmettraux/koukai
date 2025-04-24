@@ -68,6 +68,8 @@ class ShowboardResponse {
 class GoBoard extends DivComponent {
 
   _boardHeightToWidth = 454.5 / 424.2;
+  _boardHeightToWindow = 0.875;
+
   _lineHeight = 23.7;
   _lineWidth = 22.0;
   _lineThickness = 0.7;
@@ -272,12 +274,11 @@ class GoBoard extends DivComponent {
     this._drawGrid();
 
     let ro = new ResizeObserver(function(es) {
-clog('resize');
       for (let e of es) {
         let w = e.contentRect.width;
         let h = w * e.target._boardHeightToWidth;
         if (h > window.innerHeight) {
-          h = window.innerHeight * 0.9;
+          h = window.innerHeight * e.target._boardHeightToWindow;
           w = h / e.target._boardHeightToWidth;
         }
         e.target.style.width = `${w}px`;
