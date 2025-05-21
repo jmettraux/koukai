@@ -113,12 +113,13 @@ body {
 }
 
 #goban {
+
   display: grid;
   grid-template-columns: auto 17rem;
+
   [is="v-score-tracker"] {
-    /*
-    background-color: blue;
-    */
+    height: 0;
+    overflow-y: auto;
     padding-top: 1.5rem;
     padding-left: 1.4rem;
     font-family: monospace;

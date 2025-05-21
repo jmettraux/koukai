@@ -37,6 +37,10 @@ class VerticalScoreTracker extends DivComponent {
     H.c(se, 'span.delta', d);
 
     H.on(le, 'mouseenter', this.#enter.bind(this));
+
+    if (this.#goban) this.style.height = this.#goban.style.height;
+
+    this.scrollTop = this.scrollHeight;
   }
 
   set goban(ge) {
