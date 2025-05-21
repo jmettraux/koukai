@@ -133,5 +133,13 @@ body {
       .vertex { justify-self: center; }
     }
   }
+  [is="v-score-tracker"]::-webkit-scrollbar {
+    width: 0;
+  }
+  /*
+  [is="v-score-tracker"]::-webkit-scrollbar:hover {
+    width: 7px;
+  }
+  */
 }
 
