@@ -100,6 +100,7 @@ class Koukai::Endpoints < Sinatra::Base
       scripts/div_component.js
       scripts/go_board.js
       scripts/score_tracker.js
+      scripts/v_score_tracker.js
         ]
   end
 

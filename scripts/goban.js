@@ -33,6 +33,10 @@ var Goban = (function() {
     //let ste = new ScoreTracker(); H.satt(ste, 'is', 'score-tracker');
     //H.elt('#goban').appendChild(ste);
     //gbe.scoreTracker = ste;
+      //
+    let te = new VerticalScoreTracker(); H.satt(te, 'is', 'v-score-tracker');
+    H.elt('#goban').appendChild(te);
+    gbe.scoreTracker = te;
   };
 
   //

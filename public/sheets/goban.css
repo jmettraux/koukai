@@ -23,6 +23,16 @@ body {
   80% { transform: translate(-0.70px, 0px); }
   100% { transform: translate(0.00px, 0px); }
 }
+/*
+@keyframes voscillate {
+  0% { transform: translate(0px, 0.70px); }
+  20% { transform: translate(0px, 0.35px); }
+  40% { transform: translate(0px, 0.00px); }
+  60% { transform: translate(0px, -0.35px); }
+  80% { transform: translate(0px, -0.70px); }
+  100% { transform: translate(0px, 0.00px); }
+}
+*/
 
 .go-board[is] {
 
@@ -44,6 +54,13 @@ body {
     image.stone.highlighted {
       transform-origin: center;
       animation: oscillate 0.077s 10 ease-in-out;
+    }
+    image.stone.vighlighted {
+      /*
+      transform-origin: center;
+      animation: voscillate 0.077s 20 ease-in-out;
+      */
+      filter: drop-shadow(1px 1px 7px black);
     }
 
     .star-point {
@@ -91,6 +108,28 @@ body {
     }
     rect.minus:hover {
       fill: blue;
+    }
+  }
+}
+
+#goban {
+  display: grid;
+  grid-template-columns: auto 17rem;
+  [is="v-score-tracker"] {
+    /*
+    background-color: blue;
+    */
+    padding-top: 1.5rem;
+    padding-left: 1.4rem;
+    font-family: monospace;
+    color: darkgrey;
+
+    .move {
+      display: grid;
+      grid-template-columns: 3ch 1ch 3ch 6ch 6ch;
+      grid-column-gap: 0.84em;
+      .number, .score, .delta { justify-self: end; }
+      .vertex { justify-self: center; }
     }
   }
 }

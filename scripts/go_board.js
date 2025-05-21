@@ -139,6 +139,16 @@ class GoBoard extends DivComponent {
     H.addc(this, `svg .stone[-koukai-vertex="${vertex}"]`, '.highlighted');
   }
 
+  vighlightStone(vertex) {
+
+    H.remc(this, 'svg .stone.vighlighted', '.vighlighted');
+
+    let se = H.elt(this, `svg .stone[-koukai-vertex="${vertex}"]`);
+
+    H.addc(se, '.vighlighted');
+    window.setTimeout( function() { H.remc(se, '.vighlighted'); }, 1000);
+  }
+
   _addStone(colour, vertex) {
 
     this._lastStone = [ colour, vertex ];
@@ -333,9 +343,9 @@ class GtpBoard extends GoBoard {
     let s = (m[1] === 'W' ? -1 : 1 ) * parseFloat(m[2]);
     let d = s - this.#scores[this.#scores.length - 1];
     this.#scores.push(s);
-clog(this.#scores, d);
+//clog(this.#scores, d);
     if (this.#scoreTracker) this.#scoreTracker.push(
-      this, this._moveCount, this._lastStone, s);
+      this, this._moveCount, this._lastStone, s, d);
   };
 
   _otherColour(c) { return c.toLowerCase() === 'black' ? 'white' : 'black'; }
@@ -420,7 +430,12 @@ clog(this.#scores, d);
   get boardId() { return this.#bid; }
 
   get scoreTracker() { return this.#scoreTracker; }
-  set scoreTracker(ste) { this.#scoreTracker = ste; }
+
+  set scoreTracker(ste) {
+
+    this.#scoreTracker = ste;
+    try { ste.goban = this; } catch(err) {}
+  }
 }
 
 class GnuGoBoard extends GtpBoard {

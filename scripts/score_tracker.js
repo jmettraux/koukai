@@ -27,7 +27,7 @@ class ScoreTracker extends DivComponent {
       Svg.create(this, 'svg', { viewBox: `0 0 300 ${this.#height}` });
   }
 
-  push(ge, moveCount, stone, delta) {
+  push(ge, moveCount, stone, score, delta) {
 
     this.#graph.style.width = ge.style.width;
     let a = [ stone[0], stone[1], delta ];
