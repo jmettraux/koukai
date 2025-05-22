@@ -16,6 +16,17 @@ class VerticalScoreTracker extends DivComponent {
     if (this.#goban) this.#goban.vighlightStone(H.t(ev));
   }
 
+  #enterDelta(ev) {
+
+    if (ev.type === 'mouseenter') {
+      let m = H.texti(ev, '^.move .number');
+      this.#goban.showUntilMove(m);
+    }
+    else { // 'mouseleave'
+      this.#goban.showAllMoves();
+    }
+  }
+
   //
   // "protected" methods
 
@@ -41,9 +52,12 @@ if (stone[1] === 'pass') clog('PASS', stone, score, delta);
     H.c(se, 'span.color.' + c, c);
     let le = H.c(se, 'span.vertex', stone[1]);
     H.c(se, 'span.score.' + s, score.toFixed(1));
-    H.c(se, 'span.delta.' + z, d);
+    let de = H.c(se, 'span.delta.' + z, d);
 
     H.on(le, 'mouseenter', this.#enter.bind(this));
+
+    H.on(de, 'mouseenter', this.#enterDelta.bind(this));
+    H.on(de, 'mouseleave', this.#enterDelta.bind(this));
 
     if (this.#goban) this.style.height = this.#goban.style.height;
 

@@ -561,6 +561,25 @@ class GnuGoBoard extends GtpBoard {
   get mode() { return this.#mode; }
 
   get engine() { return 'GnuGO'; }
+
+  showUntilMove(m) {
+
+    H.remc(this, 'svg .stone.vighlighted', '.vighlighted');
+
+    H.forEach(this, 'image.stone', function(se) {
+
+      let sm = H.atti(se, '-koukai-move');
+      if (sm > m) H.hide(se);
+      if (sm === m) H.addc(se, '.vighlighted');
+    });
+  }
+
+  showAllMoves() {
+
+    H.remc(this, 'svg .stone.vighlighted', '.vighlighted');
+
+    H.unhide(this, 'image.stone');
+  }
 }
 
 customElements.define('go-board', GoBoard, { extends: 'div' });
