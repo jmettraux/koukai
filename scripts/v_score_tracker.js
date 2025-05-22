@@ -27,10 +27,12 @@ class VerticalScoreTracker extends DivComponent {
 
   push(ge, moveCount, stone, score, delta) {
 
+    let big = 10;
+
     let c = stone[0].substr(0, 1);
     let d = delta.toFixed(1); d = delta < 0 ? d : '+' + d;
     let s = score > 0 ? 'b' : 'w';
-    let z = (delta > 14) ? 'b' : (delta < -14) ? 'red' : 'neutral';
+    let z = (delta > big) ? 'b' : (delta < -big) ? 'red' : 'neutral';
 
     let se = H.c(this, 'div.move');
     H.c(se, 'span.number', '' + moveCount);

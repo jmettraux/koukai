@@ -346,6 +346,7 @@ class GtpBoard extends GoBoard {
 //clog(this.#scores, d);
     if (this.#scoreTracker) this.#scoreTracker.push(
       this, this._moveCount, this._lastStone, s, d);
+        // TODO fix me for when white passes...
   };
 
   _otherColour(c) { return c.toLowerCase() === 'black' ? 'white' : 'black'; }
