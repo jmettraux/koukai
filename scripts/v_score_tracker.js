@@ -27,14 +27,17 @@ class VerticalScoreTracker extends DivComponent {
 
   push(ge, moveCount, stone, score, delta) {
 
+    let c = stone[0].substr(0, 1);
     let d = delta.toFixed(1); d = delta < 0 ? d : '+' + d;
+    let s = score > 0 ? 'b' : 'w';
+    let z = (delta > 14) ? 'b' : (delta < -14) ? 'red' : 'neutral';
 
     let se = H.c(this, 'div.move');
     H.c(se, 'span.number', '' + moveCount);
-    H.c(se, 'span.color', stone[0].substr(0, 1));
+    H.c(se, 'span.color.' + c, c);
     let le = H.c(se, 'span.vertex', stone[1]);
-    H.c(se, 'span.score', score.toFixed(1));
-    H.c(se, 'span.delta', d);
+    H.c(se, 'span.score.' + s, score.toFixed(1));
+    H.c(se, 'span.delta.' + z, d);
 
     H.on(le, 'mouseenter', this.#enter.bind(this));
 
