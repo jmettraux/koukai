@@ -27,6 +27,8 @@ class VerticalScoreTracker extends DivComponent {
 
   push(ge, moveCount, stone, score, delta) {
 
+if (stone[1] === 'pass') clog('PASS', stone, score, delta);
+// it says [ 'black', 'pass' ] for white...
     let big = 10;
 
     let c = stone[0].substr(0, 1);

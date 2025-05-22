@@ -149,7 +149,7 @@ class GoBoard extends DivComponent {
     window.setTimeout( function() { H.remc(se, '.vighlighted'); }, 1000);
   }
 
-  _addStone(colour, vertex) {
+  _addStone(colour, vertex, moveNumber) {
 
     this._lastStone = [ colour, vertex ];
 
@@ -167,7 +167,8 @@ class GoBoard extends DivComponent {
         width: this._stoneDiameter, height: this._stoneDiameter,
         'xlink:href': `images/${colour}.png`, class: 'stone',
         'data-koukai-vertex': vertex,
-        'data-koukai-stone': colour === 'black' ? 'X' : 'O' });
+        'data-koukai-stone': colour === 'black' ? 'X' : 'O',
+        'data-koukai-move': '' + moveNumber });
 
     this._playStoneSound();
   }
@@ -371,7 +372,7 @@ class GtpBoard extends GoBoard {
     else if (c0 === 'genmove') {
       this._moveCount = (this._moveCount || 0) + 1;
       let o = c.split(' ')[1];
-      this._addStone(o, r);
+      this._addStone(o, r, this._moveCount);
       this._highlightStone(r);
       this._turn = this._otherColour(o);
       H.addc(this, '.inputting');
@@ -466,7 +467,7 @@ class GnuGoBoard extends GtpBoard {
 
     H.remc(this, '.inputting');
 
-    this._addStone(this._player, vertex);
+    this._addStone(this._player, vertex, this._moveCount);
 
     this._send(
       pre,
