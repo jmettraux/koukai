@@ -27,6 +27,19 @@ class VerticalScoreTracker extends DivComponent {
     }
   }
 
+  #flagTurning() {
+
+    H.remc(this, '.move', '.turning');
+
+    let score = -1;
+
+    let me = H.elts(this, '.move')
+      .reverse()
+      .find(function(me) { return H.texti(me, '.score') >= 0; });
+
+    if (me) H.addc(me, '.turning');
+  }
+
   //
   // "protected" methods
 
@@ -40,6 +53,7 @@ class VerticalScoreTracker extends DivComponent {
 
 if (stone[1] === 'pass') clog('PASS', stone, score, delta);
 // it says [ 'black', 'pass' ] for white...
+
     let big = 10;
 
     let c = stone[0].substr(0, 1);
@@ -62,6 +76,8 @@ if (stone[1] === 'pass') clog('PASS', stone, score, delta);
     if (this.#goban) this.style.height = this.#goban.style.height;
 
     this.scrollTop = this.scrollHeight;
+
+    this.#flagTurning();
   }
 
   set goban(ge) {
