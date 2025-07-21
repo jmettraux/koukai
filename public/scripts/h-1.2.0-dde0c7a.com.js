@@ -91,18 +91,22 @@ this.eltv = toEltv;
 this.e = toElt;
 this.es = toElts;
 this.ev = toEltv;
+this.last = function(start, sel) {
+  let es = toElts(start, sel);
+  return es[es.length - 1];
+};
 this.count = function(start, sel) { return toElts(start, sel).length; };
 this.click = function(start, sel) { toElt(start, sel).click(); };
 this.k = this.click;
-this.forEach = function(start, sel, fun) {
-  if ((typeof sel) === 'function') { fun = sel; sel = null; }
+this.forEach = function(start, sel, fun, thisArg) {
+  if ((typeof sel) === 'function') { thisArg = fun; fun = sel; sel = null; }
   let r = toElts(start, sel);
-  r.forEach(fun);
+  r.forEach(fun, thisArg);
   return r;
 };
-this.map = function(start, sel, fun) {
-  if ((typeof sel) === 'function') { fun = sel; sel = null; }
-  return toElts(start, sel).map(fun);
+this.map = function(start, sel, fun, thisArg) {
+  if ((typeof sel) === 'function') { thisArg = fun; fun = sel; sel = null; }
+  return toElts(start, sel).map(fun, thisArg);
 };
 this.filter = function(start, sel, fun) {
   if ((typeof sel) === 'function') { fun = sel; sel = null; }
@@ -351,7 +355,13 @@ this.upload = function(uri, inputFileElt_s, data, callbacks) {
   if ( ! callbacks) { callbacks = data; data = {}; }
   if ( ! data) data = {};
   let fd = new FormData();
-  for (let k in data) fd.append(k, data[k]);
+  for (let k in data) {
+    let v = data[k]; v =
+      ((typeof v === 'string') || (v instanceof Blob)) ? v :
+      (v === undefined) ? 'null' :
+      JSON.stringify(v);
+    fd.append(k, v);
+  }
   let isMulti = Array.isArray(inputFileElt_s);
   let elts = isMulti ? inputFileElt_s : [ inputFileElt_s ];
   let fcount = 0;
@@ -682,6 +692,11 @@ this.isDisabled = function(start, sel) {
 };
 this.disabled = this.isDisabled;
 this.dised = this.isDisabled;
+this.isClassDisabled = function(start, sel) {
+  return self.hasClass(H.e(start, sel), '.disabled');
+};
+this.cDisabled = this.isClassDisabled;
+this.cdisabled = this.isClassDisabled;
 this.setAtt = function(start, sel, aname, value) {
   if (arguments.length < 4) { value = aname; aname = sel; sel = null; }
   if (aname.slice(0, 1) === '-') { aname = 'data' + aname; }
@@ -1096,7 +1111,8 @@ this.isVacuous = function(x) {
     return Object.keys(x).length < 1;
   return false;
 };
-let _iterate = function(iterator, array_or_hash, fun) {
+let _iterate = function(iterator, array_or_hash, fun, thisArg) {
+  fun = fun.bind(thisArg);
   if (Array.isArray(array_or_hash)) {
     return array_or_hash[iterator](
       fun);
@@ -1107,41 +1123,43 @@ let _iterate = function(iterator, array_or_hash, fun) {
   }
   throw new Error('Cannot iterate over >' + JSON.dump(array_or_hash) + '<');
 };
-this.each = function(array_or_hash, fun) {
-  return _iterate('forEach', array_or_hash, fun); };
-this.collect = function(array_or_hash, fun) {
-  return _iterate('map', array_or_hash, fun); };
-let _elect = function(positive, array_or_hash, fun) {
+this.each = function(array_or_hash, fun, thisArg) {
+  return _iterate('forEach', array_or_hash, fun, thisArg); };
+this.collect = function(array_or_hash, fun, thisArg) {
+  return _iterate('map', array_or_hash, fun, thisArg); };
+let _elect = function(positive, array_or_hash, fun, thisArg) {
   if (Array.isArray(array_or_hash)) {
-    return array_or_hash.filter(function(e, i) {
-      return ( !! fun(e, i)) === positive;
-    });
+    return array_or_hash.filter(
+      function(e, i) { return ( !! fun(e, i)) === positive; },
+      thisArg);
   }
   if (self.isHash(array_or_hash)) {
     let h = {};
-    Object.entries(array_or_hash).forEach(function(kv, i) {
-      let k = kv[0], v = kv[1];
-      if (( !! fun(k, v, i)) === positive) h[k] = v;
-    });
+    Object.entries(array_or_hash).forEach(
+      function(kv, i) {
+        let k = kv[0], v = kv[1];
+        if (( !! fun(k, v, i)) === positive) h[k] = v;
+      },
+      thisArg);
     return h;
   }
   throw new Error('Cannot iterate over >' + JSON.dump(array_or_hash) + '<');
 };
-this.select = function(array_or_hash, fun) {
-  return _elect(true, array_or_hash, fun); };
-this.reject = function(array_or_hash, fun) {
-  return _elect(false, array_or_hash, fun); };
-this.inject = function(array_or_hash, fun, acc) {
+this.select = function(array_or_hash, fun, thisArg) {
+  return _elect(true, array_or_hash, fun, thisArg); };
+this.reject = function(array_or_hash, fun, thisArg) {
+  return _elect(false, array_or_hash, fun, thisArg); };
+this.inject = function(array_or_hash, fun, acc, thisArg) {
   if (Array.isArray(array_or_hash)) {
-    return array_or_hash.reduce(fun, acc);
+    return array_or_hash.reduce(fun.bind(thisArg), acc);
   }
   if (self.isHash(array_or_hash)) {
     Object.entries(array_or_hash)
-      .forEach(function(kv, i) { acc = fun(acc, kv[0], kv[1], i); });
+      .forEach(function(kv, i) { acc = fun(acc, kv[0], kv[1], i); }, thisArg);
     return acc;
   }
   throw new Error('Cannot iterate over >' + JSON.dump(array_or_hash) + '<');
 };
 return this;
 }).apply({}); // end H
-/* compacted from commit c68a651 on Fri Dec 27 14:23:34 JST 2024 */
+/* compacted from commit dde0c7a on Fri May  2 10:34:09 JST 2025 */
