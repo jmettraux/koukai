@@ -330,13 +330,15 @@ class GtpBoard extends GoBoard {
 
     let r = new ShowboardResponse(b);
 
-    H.forEach(this, 'svg image.stone', function(e) {
+    H.forEach(
+      this, 'svg image.stone:not([-koukai-removed])',
+      function(e) {
 
-      let v = H.att(e, '-koukai-vertex');
-      let c = H.att(e, '-koukai-stone');
+        let v = H.att(e, '-koukai-vertex');
+        let c = H.att(e, '-koukai-stone');
 
-      if (r[v] !== c) H.remove(e);
-    });
+        if (r[v] !== c) H.satt(e, '-koukai-removed', '' + this._moveCount); },
+      this);
   };
 
   _updateScore(r) {
@@ -564,6 +566,8 @@ class GnuGoBoard extends GtpBoard {
 
   showUntilMove(m) {
 
+    H.addc(this, 'svg', '.show-until-mode');
+
     H.remc(this, 'svg .stone.vighlighted', '.vighlighted');
 
     H.forEach(this, 'image.stone', function(se) {
@@ -572,9 +576,13 @@ class GnuGoBoard extends GtpBoard {
       if (sm > m) H.hide(se);
       if (sm === m) H.addc(se, '.vighlighted');
     });
+
+    // FIXME show only the latest for -koukai-removed stones...
   }
 
   showAllMoves() {
+
+    H.remc(this, 'svg', '.show-until-mode');
 
     H.remc(this, 'svg .stone.vighlighted', '.vighlighted');
 
